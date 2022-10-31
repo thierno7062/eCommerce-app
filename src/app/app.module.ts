@@ -3,7 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {HttpClientModule} from '@angular/common/http'
 import { OdersModule } from './oders/oders.module';
+import { ProductsModule } from './products/products.module';
 import { SiteLayoutModule } from './site-layout/site-layout.module';
 
 @NgModule({
@@ -14,7 +16,9 @@ import { SiteLayoutModule } from './site-layout/site-layout.module';
     BrowserModule,
     AppRoutingModule,
     OdersModule,
-    SiteLayoutModule
+    HttpClientModule,
+    SiteLayoutModule,
+    ProductsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
