@@ -12,7 +12,7 @@ export class ProductService {
   constructor(private httpclient: HttpClient) { }
 
   createProduct(productBody: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/products';
+    const baseUrl='http://localhost:3000/product';
     return this.httpclient.post<Product>(baseUrl,productBody);
   }
 
@@ -21,23 +21,23 @@ export class ProductService {
     return this.httpclient.get<Product>(baseUrl);
   }
 
-  updateProduct(productID: any,productBody: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/products'+productID;
+  updateProduct(productId: any,productBody: any):Observable<Product>{
+    const baseUrl='http://localhost:3000/product'+productId;
     return this.httpclient.put<Product>(baseUrl,productBody);
   }
 
-  deleteProduct(productID: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/products'+productID;
+  deleteProduct(productId: any):Observable<Product>{
+    const baseUrl='http://localhost:3000/product'+productId;
     return this.httpclient.get<Product>(baseUrl);
   }
 
-  searchCategorieProduct(categorieID: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/products'+categorieID;
+  searchCategorieProduct(categorieId: any):Observable<Product>{
+    const baseUrl='http://localhost:3000/products?categoryId='+categorieId;
     return this.httpclient.get<Product>(baseUrl);
   }
 
   searchDateProduct(dateParam: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/products'+dateParam;
+    const baseUrl='http://localhost:3000/product/date='+dateParam;
     return this.httpclient.delete<Product>(baseUrl);
   }
 
