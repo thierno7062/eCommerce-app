@@ -17,12 +17,14 @@ export class ViewProductComponent implements OnInit {
     this.activatedRoute.params.subscribe(data=>{
       this.productID=data['id'];
     })
-   /*  this.productService.viewProduct(this.productID).subscribe(viewData =>{
+    this.productService.viewOneProduct(this.productID).subscribe(viewData =>{
+      this.productData = viewData;
+      console.log(this.productData);
+
+    })
+    /* this.productService.viewProduct().subscribe(viewData =>{
       this.productData = viewData;
     }) */
-    this.productService.viewProduct().subscribe(viewData =>{
-      this.productData = viewData;
-    })
   }
 
 }
