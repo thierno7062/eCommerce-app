@@ -16,8 +16,12 @@ export class ProductService {
     return this.httpclient.post<Product>(baseUrl,productBody);
   }
 
+  /* viewProduct(categoryId: any):Observable<Product>{
+    const baseUrl='http://localhost:3000/products/'+categoryId;
+    return this.httpclient.get<Product>(baseUrl);
+  } */
   viewProduct():Observable<Product>{
-    const baseUrl='http://localhost:3000/products';
+    const baseUrl='http://localhost:3000/products/';
     return this.httpclient.get<Product>(baseUrl);
   }
 
@@ -31,8 +35,8 @@ export class ProductService {
     return this.httpclient.get<Product>(baseUrl);
   }
 
-  searchCategorieProduct(categorieId: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/products?categoryId='+categorieId;
+  searchCategorieProduct(categoryId: any):Observable<Product>{
+    const baseUrl='http://localhost:3000/products?categoryId='+categoryId;
     return this.httpclient.get<Product>(baseUrl);
   }
 
