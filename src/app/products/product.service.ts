@@ -3,16 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category } from '../site-layout/category';
 import { Product } from './product';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor(private httpclient: HttpClient) { }
+  constructor(private httpclient: HttpClient) { 
+    console.log("API: "+environment.api_url);
+  }
 
   createProduct(productBody: any):Observable<Product>{
-    const baseUrl='http://localhost:3000/product';
+
+    const baseUrl=environment.api_url+'?Action=GET_LISTE_PRODUIT_WHATSAPP&IDCATEGORIE=1';
     return this.httpclient.post<Product>(baseUrl,productBody);
   }
 
@@ -21,7 +25,8 @@ export class ProductService {
     return this.httpclient.get<Product>(baseUrl);
   }
   viewProduct():Observable<Product>{
-    const baseUrl='http://localhost:3000/products/';
+    console.log("Je charge la liste des produits ici.");
+    const baseUrl=environment.api_url+'?Action=GET_LISTE_PRODUIT_WHATSAPP&IDCATEGORIE=1';
     return this.httpclient.get<Product>(baseUrl);
   }
 
