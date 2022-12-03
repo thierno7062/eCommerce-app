@@ -46,15 +46,15 @@
                     </div>
                     <!-- Product actions: Vente au Détail-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                      <div class="text-center"><p>Qte {{prod.united}} : <input type="number" name="quantiteDetail" min="1" value={{prod.qteAVendreDetail}} ></p></div>
-                      <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod, prod.qteAVendreDetail,0)">Ajouter au Panier</a></div>
+                      <div class="text-center"><p>Qte {{prod.united}} : <input type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} ></p></div>
+                      <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div>
                     </div>
 
                     <!-- Product actions: Vente en Gros-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent"> 
                         <p>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </p>                       
-                        <div class="text-center"><p>Qte {{prod.unitec}} : <input type="number" name="quantiteGros" min="1" value={{prod.qteAVendreGros}} ></p></div>
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod, prod.qteAVendreGros,1)">Ajouter au Panier</a></div>
+                        <div class="text-center"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} ></p></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,1)">Ajouter au Panier</a></div>
                     </div>
               </div>
           </div>
