@@ -24,18 +24,43 @@ export class ViewAllProductComponent implements OnInit {
 
     }) */
     this.productService.viewProduct2().subscribe(data=>{
-      this.listArticles=data;
-      console.log(data);
+      let newListeArticles=new Array();      
+      data.forEach(function (article: any) {
+        article['qteAVendreDetail']=0;
+        article['qteAVendreGros']=0;
+        article['TypeVente']=0;
+        newListeArticles.push(article);
+        
+      });
+      console.log(newListeArticles);
+      this.listArticles=newListeArticles;
+      //console.log(data);
 
     });
     this.cartservice.getProducts()
     .subscribe(res=>{
+      //console.log(res);      
       this.totalItem=res.length;
     })
   }
 
-  addToCart(item: any){
-    this.cartservice.addtoCart(item);
+  /**
+   * 
+   * @param item : Article à ajouter au panier
+   * @param qte : Qté à Ajouter
+   * @param venteGros : 1= Oui ; 0= Non
+   */
+  addToCart(article: any, qte: number, venteGros: number){
+    if (qte==0){
+      if (venteGros>0){
+        qte=article.qteAVendreGros ;
+      }else{
+        qte=article.qteAVendreDetail;
+      }
+      qte +=1;
+    }
+    console.log("Je dois ajouter "+qte+" de l'article "+article.nom+". VenteGros="+venteGros);    
+    this.cartservice.addtoCart(article,qte,venteGros);
 
  }
 

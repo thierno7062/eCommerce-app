@@ -17,10 +17,26 @@ export class CartService {
     this.cartItemList.push(...product);
     this.productList.next(product);
   }
-  addtoCart(product: any){
+
+  /**
+   * 
+   * @param product : Article à ajouter au panier
+   * @param qte : Qté à Ajouter
+   * @param venteGros : 1= Oui ; 0= Non
+   */
+  addtoCart(product: any, qte: number,venteGros: number){
+
+      if (venteGros>0){
+        product.qteAVendreGros=qte ;
+      }else{
+        product.qteAVendreDetail=qte;
+      }
+    
     this.cartItemList.push(product);
     this.productList.next(this.cartItemList)
     this.getTotalPrice();
+    console.log(this.getTotalPrice());
+    
     console.log(this.cartItemList);
 
   }
@@ -28,7 +44,16 @@ export class CartService {
   getTotalPrice(){
     let grandTotal=0;
     this.cartItemList.map((a: any)=>{
-      grandTotal +=a.total;
+      //console.log(a);
+      if (a.qteAVendreDetail !==0){
+        let TotalPdtDetail=a.prix*a.qteAVendreDetail;      
+        grandTotal +=TotalPdtDetail;
+      }
+      if (a.qteAVendreGros !==0){
+        let TotalPdtGros=a.prixvc*a.qteAVendreGros;      
+        grandTotal +=TotalPdtGros;
+      }
+      
     })
     return grandTotal
   }
