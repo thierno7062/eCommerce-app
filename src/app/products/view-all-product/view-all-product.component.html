@@ -22,7 +22,7 @@
           <div class="col mb-5" *ngFor="let prod of listArticles">
               <div class="card h-100" >
                   <!-- Sale badge-->
-                  <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                  <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
                   <!-- Product image-->
                   <img class="card-img-top" [src]=" prod.photo  " alt="..." />
                   <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
@@ -45,17 +45,19 @@
                       </div>                      
                     </div>
                     <!-- Product actions: Vente au Détail-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                      <div class="text-center"><p>Qte {{prod.united}} : <input type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} ></p></div>
-                      <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
+                      <div><p>Qte {{prod.united}} : <input class="td-flex justify-content-center small text-warning mb-2" type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} placeholder="quantité en pièce..." ></p></div>
+                      <!-- <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div> -->
                     </div>
 
                     <!-- Product actions: Vente en Gros-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent"> 
-                        <p>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </p>                       
-                        <div class="text-center"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} ></p></div>
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,1)">Ajouter au Panier</a></div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox"> 
+                        <strong>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </strong>                       
+                        <div class="d-flex justify-content-center small text-warning mb-2"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} placeholder="quantité en carton..." ></p></div>
                     </div>
+
+                    <!-- Bouton Ajouter-->
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,1)">Ajouter au Panier</a></div>
               </div>
           </div>
 

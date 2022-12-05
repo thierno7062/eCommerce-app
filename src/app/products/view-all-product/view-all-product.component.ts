@@ -3,6 +3,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-view-all-product',
@@ -17,7 +18,12 @@ export class ViewAllProductComponent implements OnInit {
   
   public totalItem:number = 0;
 
-  constructor(private productService: ProductService, private cartservice: CartService) { }
+  constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute) { 
+    this.route.queryParams.subscribe(params => {
+      environment.idClient = params['IDCLT'];
+      //console.log(environment.idClient);      
+    });
+  }
 
   ngOnInit(): void {
   /*   this.productService.viewProduct().subscribe(data=>{
