@@ -7,6 +7,7 @@ import {HttpClientModule} from '@angular/common/http'
 import { OdersModule } from './oders/oders.module';
 import { ProductsModule } from './products/products.module';
 import { SiteLayoutModule } from './site-layout/site-layout.module';
+import { AngularWebStorageModule } from 'angular-web-storage';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SiteLayoutModule } from './site-layout/site-layout.module';
     OdersModule,
     HttpClientModule,
     SiteLayoutModule,
-    ProductsModule
+    ProductsModule,
+    AngularWebStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

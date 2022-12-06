@@ -24,8 +24,8 @@ export class CartComponent implements OnInit {
       let vListe=new Array;      
       
       res.forEach(function (art: any){
-          let qteGros=art.qteAVendreGros;
-          let qteDetail=art.qteAVendreDetail ;
+          const qteGros=art.qteAVendreGros;
+          const qteDetail=art.qteAVendreDetail ;
           if (qteDetail > 0 && qteGros>0){
             if (qteDetail !== 0){
               let vArticle=Object.assign({},art) ;
@@ -42,21 +42,48 @@ export class CartComponent implements OnInit {
               vListe.push(vArticle2);
             }
           }else{
-            vListe.push(art) ;
+            let vArticle=Object.assign({},art) ;
+            console.log(vArticle);
+            
+            if (qteDetail>0){
+              vArticle.qteAVendreDetail=qteDetail ;
+              vArticle.qteAVendreGros=0;
+              vArticle.isVenteGros=false ;
+              vListe.push(vArticle);
+            }
+            if (qteGros>0){
+              vArticle.qteAVendreGros=qteGros; 
+              vArticle.qteAVendreDetail=0;  
+              vArticle.isVenteGros=true ;   
+              vListe.push(vArticle); 
+            }              
+              
           }
           
         }
       );
       this.listePanier=vListe;
+      if (this.listePanier.length==0){
+        //this.cartService.cartItemList=[];
+      }
       //console.log(this.listePanier);
       
 
     })
   }
 
-  removeItem(item: any, isVenteG: boolean = false){
-    if(confirm("Confirmez-vous la suppression de l'article du panier ?")){
-      this.cartService.removeCartItem(item,isVenteG);
+  removeItem(item: any, isVenteG: any){
+    let venteG=false;
+    let TxC="au détail";
+    //console.log(isVenteG);
+    
+    if (isVenteG>0 || isVenteG==true){
+      venteG=true;
+      TxC="en gros";
+    }
+    if(confirm("Confirmez-vous la suppression de "+item.nom+" vendu "+TxC+" du panier ?")){
+      
+      this.cartService.removeCartItem(item,venteG);
     }    
     //alert("Ligne d'article correctement supprimée.")
   }
