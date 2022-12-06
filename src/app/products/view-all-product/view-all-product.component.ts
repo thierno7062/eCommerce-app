@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
+import {LocalStorageService, LocalStorage } from 'angular-web-storage';
 
 @Component({
   selector: 'app-view-all-product',
@@ -17,10 +18,14 @@ export class ViewAllProductComponent implements OnInit {
   @ViewChild('quantiteGros') quantiteGros:ElementRef | undefined;
   
   public totalItem:number = 0;
+  public panierKey: string = "panier" ;
 
-  constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute) { 
+  constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute, 
+    private stockage: LocalStorageService) { 
     this.route.queryParams.subscribe(params => {
       environment.idClient = params['IDCLT'];
+      this.stockage.set("IDCLIENT",environment.idClient);
+
       //console.log(environment.idClient);      
     });
   }
@@ -31,6 +36,8 @@ export class ViewAllProductComponent implements OnInit {
       console.log(data);
 
     }) */
+    this.restorePanierFromStorage();
+
     this.productService.viewProduct2().subscribe(data=>{
       let newListeArticles=new Array();      
       data.forEach(function (article: any) {
@@ -71,18 +78,64 @@ export class ViewAllProductComponent implements OnInit {
     }
     //console.log("Je dois ajouter "+qte+" de l'article "+article.nom+". VenteGros="+venteGros);    
     this.cartservice.addtoCart(article,qte,venteGros);
+    this.savePanierToStorage();
 
  }
 
+ /**
+  * Permet la mise à jour d'une quantité au détail dans le panier
+  * @param article 
+  * @param qte 
+  */
  updateQteDetail(article: any, qte: any){
   article.qteAVendreDetail= +qte ;
   console.log(article.nom+ ": "+ article.qteAVendreDetail+" X "+ article.prix);
-  
+  this.savePanierToStorage();
  }
 
  updateQteGros(article: any, qte: any){
   article.qteAVendreGros=+qte;
   console.log(article.nom+ ": "+ article.qteAVendreGros+" X "+ article.prixvc);
+  this.savePanierToStorage();
 }
+
+  /**
+   * Permet de sauvegarder le panier localement
+   * @returns boolean
+   */
+  savePanierToStorage():boolean{
+    //Si le panier est vide on le sauvegardera pas
+    if (this.cartservice.cartItemList.length == 0){
+      console.log("Panier vide. pas de sauvegarde.");
+      return false ;
+    }
+    const keyContenuePanier: string=this.panierKey+".contenue";
+    // On efface le contenue du panier avant de sauvegarder tout le panier de nouveaus
+    const precPanier=this.stockage.get(keyContenuePanier);
+    // On efface le précédent panier
+    this.stockage.remove(keyContenuePanier);    
+    this.stockage.set(keyContenuePanier,JSON.stringify(this.cartservice.cartItemList)) ;
+    return true;
+
+  }
+
+  /**
+   * Permet la restoration du panier
+   * @returns boolean
+   */
+  restorePanierFromStorage():boolean{
+    //Si le panier n'existe pas en sauvegarde on a pas de restoration
+    const keyContenuePanier: string=this.panierKey+".contenue";
+    let panierSauv=this.stockage.get(keyContenuePanier);
+    if (panierSauv){
+      console.log("Panier disponible, restoration en cour ...");
+      this.cartservice.cartItemList=JSON.parse( panierSauv);
+      console.log("Panier restoré correctement: ");
+      console.debug(this.cartservice.cartItemList);      
+      return true ;
+    }
+    return false;
+
+  }
 
 }
