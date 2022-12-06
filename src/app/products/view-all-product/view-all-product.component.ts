@@ -25,7 +25,7 @@ export class ViewAllProductComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       environment.idClient = params['IDCLT'];
       this.stockage.set("IDCLIENT",environment.idClient);
-
+      this.restorePanierFromStorage();
       //console.log(environment.idClient);      
     });
   }
@@ -48,7 +48,7 @@ export class ViewAllProductComponent implements OnInit {
         newListeArticles.push(article);
         
       });
-      console.log(newListeArticles);
+      //console.log(newListeArticles);
       this.listArticles=newListeArticles;
       //console.log(data);
 
@@ -82,6 +82,17 @@ export class ViewAllProductComponent implements OnInit {
 
  }
 
+ addArticleToCart(article: any){
+  let venteGros=0;
+  if (article.qteAVendreGros>0){
+      venteGros=1;    
+      this.cartservice.addtoCart(article,article.qteAVendreGros,venteGros);
+    }else{
+      venteGros=0;
+      this.cartservice.addtoCart(article,article.qteAVendreDetail,venteGros);
+    }
+ }
+
  /**
   * Permet la mise à jour d'une quantité au détail dans le panier
   * @param article 
@@ -103,8 +114,8 @@ export class ViewAllProductComponent implements OnInit {
    * Permet de sauvegarder le panier localement
    * @returns boolean
    */
-  savePanierToStorage():boolean{
-    //Si le panier est vide on le sauvegardera pas
+  savePanierToStorage(){
+    //Si le panier est vide on le sauvegardera pas    
     if (this.cartservice.cartItemList.length == 0){
       console.log("Panier vide. pas de sauvegarde.");
       return false ;
@@ -113,8 +124,11 @@ export class ViewAllProductComponent implements OnInit {
     // On efface le contenue du panier avant de sauvegarder tout le panier de nouveaus
     const precPanier=this.stockage.get(keyContenuePanier);
     // On efface le précédent panier
-    this.stockage.remove(keyContenuePanier);    
-    this.stockage.set(keyContenuePanier,JSON.stringify(this.cartservice.cartItemList)) ;
+    this.stockage.remove(keyContenuePanier);
+    const contenue=JSON.stringify(this.cartservice.cartItemList);
+    //console.log(contenue);
+    
+    this.stockage.set(keyContenuePanier,this.cartservice.cartItemList) ;
     return true;
 
   }
@@ -123,18 +137,21 @@ export class ViewAllProductComponent implements OnInit {
    * Permet la restoration du panier
    * @returns boolean
    */
-  restorePanierFromStorage():boolean{
+  restorePanierFromStorage(){
     //Si le panier n'existe pas en sauvegarde on a pas de restoration
+    return this.cartservice.restorePanierFromStorage();
+    /* 
     const keyContenuePanier: string=this.panierKey+".contenue";
     let panierSauv=this.stockage.get(keyContenuePanier);
     if (panierSauv){
       console.log("Panier disponible, restoration en cour ...");
-      this.cartservice.cartItemList=JSON.parse( panierSauv);
-      console.log("Panier restoré correctement: ");
-      console.debug(this.cartservice.cartItemList);      
+      this.cartservice.cartItemList= panierSauv;
+      if (this.cartservice.cartItemList.length>0){
+        console.log("Panier restoré correctement: ");
+      }    
       return true ;
     }
-    return false;
+    return false; */
 
   }
 

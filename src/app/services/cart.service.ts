@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { LocalStorageService } from 'angular-web-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,9 @@ import { BehaviorSubject } from 'rxjs';
 export class CartService {
   public cartItemList:any=[]
   public productList = new BehaviorSubject<any>([])
+  public panierKey: string="panier";
 
-  constructor() { }
+  constructor(private stockage: LocalStorageService) { }
 
   getProducts(){
     return this.productList.asObservable();
@@ -86,7 +88,7 @@ export class CartService {
     this.productList.next(this.cartItemList)
     this.getTotalPrice();
     console.log(this.getTotalPrice());
-    
+    this.savePanierToStorage();
     console.log(this.cartItemList);
 
   }
@@ -109,36 +111,96 @@ export class CartService {
   }
 
   removeCartItem(product: any, isVenteG: boolean=false){
-    this.cartItemList.map((a:any, index: any)=>{
-      let articleTrouve=this.findArticle(product,true,isVenteG);
+    this.cartItemList.map((article:any, index: any)=>{
+      let articleTrouve=this.findArticle(product,false,isVenteG);
 
       if(articleTrouve){
-        if (!isVenteG){
+        if (isVenteG == false){
           console.log("Suppression de la Qté détail de "+articleTrouve.nom);          
           articleTrouve.qteAVendreDetail=0;
         }else{
+          console.log(articleTrouve.qteAVendreDetail);
+          
           console.log("Suppression de la Qté Gros de "+articleTrouve.nom);
           articleTrouve.qteAVendreGros=0;
         }
+        
         if (articleTrouve.qteAVendreDetail==0 && articleTrouve.qteAVendreGros==0){        
           console.log("Suppression de "+articleTrouve.nom+" du panier.");
           this.cartItemList.splice(index, 1);
-          this.productList.next(this.cartItemList);    
+          //this.productList.next(this.cartItemList);    
         } 
+        //console.log(this.cartItemList);
+        if (this.cartItemList.length==0){
+          this.removeAllCart();
+          this.productList.next(this.cartItemList);
+        }else{
+          this.savePanierToStorage();
+          this.productList.next(this.cartItemList);
+        }
+      }else{
+        console.log("Impossible de trouver l'article dans le panier.");        
+        //console.log(product);
         
       }
       
-      if (articleTrouve){
-        this.productList.next(this.cartItemList);    
-        //console.log(this.cartItemList);    
-      }
+      
 
     })
     
   }
 
   removeAllCart(){
-    this.cartItemList=[]
+    this.cartItemList=[];
+    const keyContenuePanier: string=this.panierKey+".contenue";
+    this.stockage.remove(keyContenuePanier);
     this.productList.next(this.cartItemList);
   }
+
+   /**
+   * Permet de sauvegarder le panier localement
+   * @returns boolean
+   */
+    savePanierToStorage(){
+      //Si le panier est vide on le sauvegardera pas    
+      if (this.cartItemList.length == 0){
+        console.log("Panier vide. pas de sauvegarde.");
+        return false ;
+      }
+      const keyContenuePanier: string=this.panierKey+".contenue";
+      // On efface le contenue du panier avant de sauvegarder tout le panier de nouveaus
+      const precPanier=this.stockage.get(keyContenuePanier);
+      // On efface le précédent panier
+      this.stockage.remove(keyContenuePanier);
+      const contenue=JSON.stringify(this.cartItemList);
+      //console.log(contenue);
+      
+      this.stockage.set(keyContenuePanier,this.cartItemList) ;
+      return true;
+  
+    }
+  
+    /**
+     * Permet la restoration du panier
+     * @returns boolean
+     */
+    restorePanierFromStorage(){
+      //Si le panier n'existe pas en sauvegarde on a pas de restoration
+      const keyContenuePanier: string=this.panierKey+".contenue";
+      let panierSauv=this.stockage.get(keyContenuePanier);
+      if (panierSauv){
+        console.log("Panier disponible, restoration en cour ...");
+        this.cartItemList= panierSauv;
+        if (this.cartItemList.length>0){
+          this.productList.next(this.cartItemList);
+          console.log("Panier restoré correctement: ");
+          //console.log(this.cartItemList);
+          
+        }    
+        return true ;
+      }
+      return false;
+  
+    }
+
 }
