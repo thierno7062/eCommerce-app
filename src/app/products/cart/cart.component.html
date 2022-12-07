@@ -7,7 +7,7 @@
             <tr>
               <th>N°Ordre</th>
               <th>Désignation</th>
-              <th></th>              
+              <th></th>
               <th>Prix U.</th>
               <th>Quantité</th>
               <th>Prix Total</th>
@@ -20,17 +20,17 @@
               <td> {{item.nom}} </td>
               <td><img src="{{item.photo}}" alt="" style="width: 120px;" /> </td>
 
-              
+
               <td *ngIf="item.qteAVendreDetail > 0" style="width: 12%;"> {{item.prix}} </td>
               <td *ngIf="item.qteAVendreDetail > 0" style="width: 12%;"> {{item.qteAVendreDetail}} </td>
               <td *ngIf="item.qteAVendreDetail > 0" style="width: 12%;"> {{item.prix * item.qteAVendreDetail}} </td>
-            
+
               <td *ngIf="item.qteAVendreGros > 0" style="width: 12%;"> {{item.prixvc}} </td>
               <td *ngIf="item.qteAVendreGros > 0" style="width: 12%;"> {{item.qteAVendreGros}} </td>
-              <td *ngIf="item.qteAVendreGros > 0" style="width: 12%;"> {{item.prixvc * item.qteAVendreGros}} </td>              
+              <td *ngIf="item.qteAVendreGros > 0" style="width: 12%;"> {{item.prixvc * item.qteAVendreGros}} </td>
 
-              <td> <button class="btn btn-danger" (click)="removeItem(item,item.isVenteGros)"><i class="fas fa-trash"></i></button> </td>
-              
+              <td> <button class="btn btn-danger" (click)="removeItem(item,item.isVenteGros)"><i class="material-icons">delete</i></button> </td>
+
             </tr>
 
             <tr>
@@ -58,3 +58,70 @@
   </div>
 
 </ng-container>
+
+<section class=""  *ngIf="product.length !=0">
+  <div class="container px-5 px-lg-5 mt-5">
+      <div class="row gx-4 gx-lg-8 row-cols-12 row-cols-md-2 row-cols-xl-3 justify-content-center">
+
+          <div class="col mb-5" *ngFor="let prod of listePanier">
+              <div class="card h-100" >
+                  <!-- Sale badge-->
+                  <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
+                  <!-- Product image-->
+                  <img class="card-img-top" [src]=" prod.photo  " alt="..." />
+                  <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
+                  <!-- Product details-->
+                  <div class="card-body p-4">
+                      <div class="text-center">
+                          <!-- Product name-->
+                          <h6 class="fw-bolder"><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h6>
+                          <!-- Product reviews-->
+                          <div class="d-flex justify-content-center small text-warning mb-2">
+                              <div class="bi-star-fill"></div>
+                              <div class="bi-star-fill"></div>
+                              <div class="bi-star-fill"></div>
+                              <div class="bi-star-fill"></div>
+                              <div class="bi-star-fill"></div>
+                          </div>
+                          <!-- Product price-->
+                          <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
+                         <h5 *ngIf="prod.qteAVendreDetail > 0">{{prod.prix }} FCFA / {{prod.united}}</h5>
+                         <h5 *ngIf="prod.qteAVendreDetail > 0">Quantité : {{prod.qteAVendreDetail}}</h5>
+                         <h5 *ngIf="prod.qteAVendreDetail > 0">Total : {{prod.prix * prod.qteAVendreDetail}}</h5>
+
+
+                         <h5 *ngIf="prod.qteAVendreGros > 0">{{prod.prixvc }} FCFA / {{prod.unitec}}</h5>
+                         <h5 *ngIf="prod.qteAVendreGros > 0">Quantité : {{prod.qteAVendreGros}}</h5>
+                         <h5 *ngIf="prod.qteAVendreGros > 0">Total : {{prod.prixvc * prod.qteAVendreGros}}</h5>
+                        </div>
+                    </div>
+
+
+                    <!-- Bouton Ajouter-->
+                    <div style="display: flex; margin: auto;" class="center">
+
+                      <div class="text-center" style="margin-right: 20px;"><a class="btn btn-danger" (click)="removeItem(prod,prod.isVenteGros)">Supprimer</a></div>   <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Modifier</a></div>
+                    </div>
+
+              </div>
+          </div>
+
+      </div>
+  </div>
+  <div class="card-table">
+    <table class="table table-responsive">
+      <tbody>
+        <tr>
+          <td colspan="4"></td>
+          <td><button (click)="emptyCart()" class="btn btn-danger">Empty Cart</button></td>
+          <td><button routerLink="/products" class="btn btn-primary">Shop More</button></td>
+          <td><button class="btn btn-success">checkout</button></td>
+          <td><strong>Total Facture: {{grandTotal}}</strong></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+

@@ -14,19 +14,22 @@ import {LocalStorageService, LocalStorage } from 'angular-web-storage';
 export class ViewAllProductComponent implements OnInit {
   productList: any;
   listArticles: any;
-  @ViewChild('quantiteDetail') quantiteDetail:ElementRef | undefined; 
+  @ViewChild('quantiteDetail') quantiteDetail:ElementRef | undefined;
   @ViewChild('quantiteGros') quantiteGros:ElementRef | undefined;
-  
+
   public totalItem:number = 0;
   public panierKey: string = "panier" ;
 
-  constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute, 
-    private stockage: LocalStorageService) { 
+  public openMenu: boolean = false;
+  isOver = false;
+
+  constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
+    private stockage: LocalStorageService) {
     this.route.queryParams.subscribe(params => {
       environment.idClient = params['IDCLT'];
       this.stockage.set("IDCLIENT",environment.idClient);
       this.restorePanierFromStorage();
-      //console.log(environment.idClient);      
+      //console.log(environment.idClient);
     });
   }
 
@@ -39,14 +42,14 @@ export class ViewAllProductComponent implements OnInit {
     this.restorePanierFromStorage();
 
     this.productService.viewProduct2().subscribe(data=>{
-      let newListeArticles=new Array();      
+      let newListeArticles=new Array();
       data.forEach(function (article: any) {
         article['qteAVendreDetail']=0;
         article['qteAVendreGros']=0;
         article['TypeVente']=0;
         article['isVenteGros']=false;
         newListeArticles.push(article);
-        
+
       });
       //console.log(newListeArticles);
       this.listArticles=newListeArticles;
@@ -55,19 +58,19 @@ export class ViewAllProductComponent implements OnInit {
     });
     this.cartservice.getProducts()
     .subscribe(res=>{
-      //console.log(res);      
+      //console.log(res);
       this.totalItem=res.length;
     })
   }
 
   /**
-   * 
+   *
    * @param item : Article à ajouter au panier
    * @param qte : Qté à Ajouter
    * @param venteGros : 1= Oui ; 0= Non
    */
   addToCart(article: any, venteGros: number){
-    //console.log("QTE="+qte);    
+    //console.log("QTE="+qte);
     let qte=0;
     if (qte==0){
       if (venteGros>0){
@@ -76,7 +79,7 @@ export class ViewAllProductComponent implements OnInit {
         qte=article.qteAVendreDetail;
       }
     }
-    //console.log("Je dois ajouter "+qte+" de l'article "+article.nom+". VenteGros="+venteGros);    
+    //console.log("Je dois ajouter "+qte+" de l'article "+article.nom+". VenteGros="+venteGros);
     this.cartservice.addtoCart(article,qte,venteGros);
     this.savePanierToStorage();
 
@@ -85,7 +88,7 @@ export class ViewAllProductComponent implements OnInit {
  addArticleToCart(article: any){
   let venteGros=0;
   if (article.qteAVendreGros>0){
-      venteGros=1;    
+      venteGros=1;
       this.cartservice.addtoCart(article,article.qteAVendreGros,venteGros);
     }else{
       venteGros=0;
@@ -95,8 +98,8 @@ export class ViewAllProductComponent implements OnInit {
 
  /**
   * Permet la mise à jour d'une quantité au détail dans le panier
-  * @param article 
-  * @param qte 
+  * @param article
+  * @param qte
   */
  updateQteDetail(article: any, qte: any){
   article.qteAVendreDetail= +qte ;
@@ -115,7 +118,7 @@ export class ViewAllProductComponent implements OnInit {
    * @returns boolean
    */
   savePanierToStorage(){
-    //Si le panier est vide on le sauvegardera pas    
+    //Si le panier est vide on le sauvegardera pas
     if (this.cartservice.cartItemList.length == 0){
       console.log("Panier vide. pas de sauvegarde.");
       return false ;
@@ -127,7 +130,7 @@ export class ViewAllProductComponent implements OnInit {
     this.stockage.remove(keyContenuePanier);
     const contenue=JSON.stringify(this.cartservice.cartItemList);
     //console.log(contenue);
-    
+
     this.stockage.set(keyContenuePanier,this.cartservice.cartItemList) ;
     return true;
 
@@ -140,7 +143,7 @@ export class ViewAllProductComponent implements OnInit {
   restorePanierFromStorage(){
     //Si le panier n'existe pas en sauvegarde on a pas de restoration
     return this.cartservice.restorePanierFromStorage();
-    /* 
+    /*
     const keyContenuePanier: string=this.panierKey+".contenue";
     let panierSauv=this.stockage.get(keyContenuePanier);
     if (panierSauv){
@@ -148,11 +151,18 @@ export class ViewAllProductComponent implements OnInit {
       this.cartservice.cartItemList= panierSauv;
       if (this.cartservice.cartItemList.length>0){
         console.log("Panier restoré correctement: ");
-      }    
+      }
       return true ;
     }
     return false; */
 
   }
 
+  clickMenu(){
+    this.openMenu = !this.openMenu;
+  }
+
+  hello(mex: string){
+      alert('Hello '+mex+'!' );
+  }
 }
