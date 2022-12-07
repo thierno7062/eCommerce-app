@@ -4,20 +4,20 @@
       <div class="text-center text-white">
           <h1 class="display-4 fw-bolder">Bienvenue à KSSV</h1>
       </div>
-      <div class="item-right" routerLink="cart">
+      <!-- <div class="item-right" routerLink="cart">
         <button class="btn btn-outline-light" type="submit">
           <i class="bi-cart-fill me-1"  routerLink="cart"></i>
           Panier
           <span class="badge bg-dark text-white ms-1 rounded-pill">{{totalItem}}</span>
-      </button>
-      </div>
+        </button>
+      </div> -->
   </div>
 </header>
 <!-- Section-->
 <!-- <section class="py-5"> -->
   <section class="">
-  <div class="container px-4 px-lg-5 mt-5">
-      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+  <div class="container px-5 px-lg-5 mt-5">
+      <div class="row gx-4 gx-lg-8 row-cols-12 row-cols-md-2 row-cols-xl-3 justify-content-center">
 
           <div class="col mb-5" *ngFor="let prod of listArticles">
               <div class="card h-100" >
@@ -42,7 +42,7 @@
                           <!-- Product price-->
                           <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
                          <strong>{{prod.prix }} FCFA / {{prod.united}}</strong>
-                      </div>                      
+                      </div>
                     </div>
                     <!-- Product actions: Vente au Détail-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
@@ -51,8 +51,8 @@
                     </div>
 
                     <!-- Product actions: Vente en Gros-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox"> 
-                        <strong>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </strong>                       
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
+                        <strong>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </strong>
                         <div class="d-flex justify-content-center small text-warning mb-2"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} placeholder="quantité en carton..." ></p></div>
                     </div>
 
@@ -63,4 +63,56 @@
 
       </div>
   </div>
+  <!-- oscuratore -->
+<div class="dialog_scrim" *ngIf="openMenu">
+</div>
+<button mat-fab color="warning" (click)="clickMenu()"
+    class="menu-button"
+    routerLink="cart"
+    >
+  <i class="material-icons" >shopping_cart</i>
+  <span class="badge bg-dark text-white ms-1 rounded-pill">{{totalItem}}</span>
+</button>
+<!-- <button mat-fab color="warning" (click)="clickMenu()"
+    class="menu-button"
+    [class.mat-elevation-z2]="!isOver"
+    [class.mat-elevation-z8]="isOver"
+    (mouseover)="isOver = true"
+    (mouseleave)="isOver = false">
+  <i class="material-icons" *ngIf="!openMenu">shopping_cart</i>
+  <i class="material-icons" *ngIf="openMenu">close</i>
+  <span class="badge bg-dark text-white ms-1 rounded-pill">{{totalItem}}</span>
+</button> -->
+
+<!-- menu button -->
+<!-- <button mat-mini-fab
+  class="action-button one mat-elevation-z8"
+  *ngIf="openMenu"
+  color="basic"
+
+  routerLink="cart">
+  <i class="material-icons">shopping_cart</i>
+</button>
+
+<button mat-raised-button
+  class="label labelone mat-elevation-z8"
+  *ngIf="openMenu"
+  color="basic">
+  Panier
+</button>
+
+<button mat-mini-fab
+  class="action-button two mat-elevation-z8"
+  *ngIf="openMenu"
+  color="basic"
+  (click)="hello('button two')">
+  <i class="material-icons">home</i>
+</button>
+<button mat-raised-button
+  class="label labeltwo mat-elevation-z8"
+  *ngIf="openMenu"
+  color="basic"
+  (click)="hello('button two')">
+  Accueil
+</button> -->
 </section>

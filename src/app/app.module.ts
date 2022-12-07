@@ -8,7 +8,8 @@ import { OdersModule } from './oders/oders.module';
 import { ProductsModule } from './products/products.module';
 import { SiteLayoutModule } from './site-layout/site-layout.module';
 import { AngularWebStorageModule } from 'angular-web-storage';
-
+// import { MatIconModule } from '@angular/material/icon';
+// import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,7 @@ import { AngularWebStorageModule } from 'angular-web-storage';
     HttpClientModule,
     SiteLayoutModule,
     ProductsModule,
-    AngularWebStorageModule
+    AngularWebStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
