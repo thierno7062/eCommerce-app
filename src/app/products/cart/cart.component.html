@@ -1,4 +1,4 @@
-<ng-container *ngIf="product.length !=0">
+<!-- <ng-container *ngIf="product.length !=0">
   <div class="container">
     <div class="card-table">
       <div class="card-product">
@@ -46,18 +46,32 @@
       </div>
     </div>
   </div>
-</ng-container>
+</ng-container> -->
 
 <!-- Empty cart -->
 <ng-container *ngIf="product.length ==0">
 
-  <div class="center">
+  <div class="center"  style="margin-top: 100px;">
     <h4>Votre panier est vide!</h4>
     <h6>Ajoutez des articles maintenant !</h6>
     <button routerLink="/products" class="btn btn-success">acheter</button>
   </div>
 
 </ng-container>
+
+<div class="card-table" *ngIf="product.length !=0">
+  <table class="table table-responsive">
+    <tbody>
+      <tr>
+        <td colspan="4"></td>
+        <td><button (click)="emptyCart()" class="btn btn-danger">Empty Cart</button></td>
+        <td><button routerLink="/products" class="btn btn-primary">Shop More</button></td>
+        <td><button class="btn btn-success">checkout</button></td>
+        <td><strong>Total Facture: {{grandTotal}}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <section class=""  *ngIf="product.length !=0">
   <div class="container px-5 px-lg-5 mt-5">
@@ -68,7 +82,7 @@
                   <!-- Sale badge-->
                   <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
                   <!-- Product image-->
-                  <img class="card-img-top" [src]=" prod.photo  " alt="..." />
+                  <img class="card-img-top" [src]=" prod.photo  " alt="..." style="height: 100%;"/>
                   <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
                   <!-- Product details-->
                   <div class="card-body p-4">
@@ -105,22 +119,7 @@
 
               </div>
           </div>
-
       </div>
-  </div>
-  <div class="card-table">
-    <table class="table table-responsive">
-      <tbody>
-        <tr>
-          <td colspan="4"></td>
-          <td><button (click)="emptyCart()" class="btn btn-danger">Empty Cart</button></td>
-          <td><button routerLink="/products" class="btn btn-primary">Shop More</button></td>
-          <td><button class="btn btn-success">checkout</button></td>
-          <td><strong>Total Facture: {{grandTotal}}</strong></td>
-        </tr>
-
-      </tbody>
-    </table>
   </div>
 </section>
 
