@@ -41,18 +41,18 @@
                           </div>
                           <!-- Product price-->
                           <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
-                         <strong>{{prod.prix }} FCFA / {{prod.united}}</strong>
+                        </div>
                       </div>
-                    </div>
-                    <!-- Product actions: Vente au Détail-->
+                      <!-- Product actions: Vente au Détail-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
+                      <small>{{prod.prix }} FCFA / {{prod.united}}</small>
                       <div><p>Qte {{prod.united}} : <input class="td-flex justify-content-center small text-warning mb-2" type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} placeholder="quantité en pièce..." ></p></div>
                       <!-- <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div> -->
                     </div>
 
                     <!-- Product actions: Vente en Gros-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
-                        <strong>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </strong>
+                        <small>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </small>
                         <div class="d-flex justify-content-center small text-warning mb-2"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} placeholder="quantité en carton..." ></p></div>
                     </div>
 
