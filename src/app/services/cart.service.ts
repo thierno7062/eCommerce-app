@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from 'angular-web-storage';
+import Swal from 'sweetalert2'
 
 @Injectable({
   providedIn: 'root'
@@ -28,19 +29,19 @@ export class CartService {
    */
   findArticle(article: any,rechercheEtendue: boolean=false, rechercheVenteGros: boolean=true):any{
     let articleTrouve=null;
-    if (this.cartItemList){      
+    if (this.cartItemList){
       this.cartItemList.forEach(function(art: any){
         if (art.id==article.id){
           if (rechercheEtendue){
-            if (rechercheVenteGros){                       
+            if (rechercheVenteGros){
               if (art.qteAVendreGros !== 0){
-                console.log('Article trouvé en gros: '+art.nom); 
+                console.log('Article trouvé en gros: '+art.nom);
                 articleTrouve=art;
                 return art;
               }
             }else{
               if (art.qteAVendreDetail !== 0){
-                console.log('Article trouvé au détail: '+art.nom); 
+                console.log('Article trouvé au détail: '+art.nom);
                 articleTrouve=art;
                 return art;
               }
@@ -49,14 +50,14 @@ export class CartService {
           else{
             articleTrouve=art;
             return art;
-          }          
+          }
         }
       })
     }
     return articleTrouve;
   }
   /**
-   * 
+   *
    * @param product : Article à ajouter au panier
    * @param qte : Qté à Ajouter
    * @param venteGros : 1= Oui ; 0= Non
@@ -71,7 +72,7 @@ export class CartService {
       if (venteGros>0){
         product.qteAVendreGros=qte ;
         if (articleExistant){
-          product.qteAVendreDetail=articleExistant.qteAVendreDetail;          
+          product.qteAVendreDetail=articleExistant.qteAVendreDetail;
         }
       }else{
         product.qteAVendreDetail=qte;
@@ -79,7 +80,7 @@ export class CartService {
           product.qteAVendreGros=articleExistant.qteAVendreGros ;
         }
       }
-    
+
       if (articleExistant){
         console.log(articleExistant);
         this.removeCartItem(articleExistant);
@@ -91,6 +92,14 @@ export class CartService {
     this.savePanierToStorage();
     console.log(this.cartItemList);
 
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Produit ajouté au Panier',
+      showConfirmButton: false,
+      timer: 1500
+    })
+
   }
 
   getTotalPrice(){
@@ -98,14 +107,14 @@ export class CartService {
     this.cartItemList.map((a: any)=>{
       //console.log(a);
       if (a.qteAVendreDetail !==0){
-        let TotalPdtDetail=a.prix*a.qteAVendreDetail;      
+        let TotalPdtDetail=a.prix*a.qteAVendreDetail;
         grandTotal +=TotalPdtDetail;
       }
       if (a.qteAVendreGros !==0){
-        let TotalPdtGros=a.prixvc*a.qteAVendreGros;      
+        let TotalPdtGros=a.prixvc*a.qteAVendreGros;
         grandTotal +=TotalPdtGros;
       }
-      
+
     })
     return grandTotal
   }
@@ -116,20 +125,20 @@ export class CartService {
 
       if(articleTrouve){
         if (isVenteG == false){
-          console.log("Suppression de la Qté détail de "+articleTrouve.nom);          
+          console.log("Suppression de la Qté détail de "+articleTrouve.nom);
           articleTrouve.qteAVendreDetail=0;
         }else{
           console.log(articleTrouve.qteAVendreDetail);
-          
+
           console.log("Suppression de la Qté Gros de "+articleTrouve.nom);
           articleTrouve.qteAVendreGros=0;
         }
-        
-        if (articleTrouve.qteAVendreDetail==0 && articleTrouve.qteAVendreGros==0){        
+
+        if (articleTrouve.qteAVendreDetail==0 && articleTrouve.qteAVendreGros==0){
           console.log("Suppression de "+articleTrouve.nom+" du panier.");
           this.cartItemList.splice(index, 1);
-          //this.productList.next(this.cartItemList);    
-        } 
+          //this.productList.next(this.cartItemList);
+        }
         //console.log(this.cartItemList);
         if (this.cartItemList.length==0){
           this.removeAllCart();
@@ -139,15 +148,15 @@ export class CartService {
           this.productList.next(this.cartItemList);
         }
       }else{
-        console.log("Impossible de trouver l'article dans le panier.");        
+        console.log("Impossible de trouver l'article dans le panier.");
         //console.log(product);
-        
+
       }
-      
-      
+
+
 
     })
-    
+
   }
 
   removeAllCart(){
@@ -162,7 +171,7 @@ export class CartService {
    * @returns boolean
    */
     savePanierToStorage(){
-      //Si le panier est vide on le sauvegardera pas    
+      //Si le panier est vide on le sauvegardera pas
       if (this.cartItemList.length == 0){
         console.log("Panier vide. pas de sauvegarde.");
         return false ;
@@ -174,12 +183,12 @@ export class CartService {
       this.stockage.remove(keyContenuePanier);
       const contenue=JSON.stringify(this.cartItemList);
       //console.log(contenue);
-      
+
       this.stockage.set(keyContenuePanier,this.cartItemList) ;
       return true;
-  
+
     }
-  
+
     /**
      * Permet la restoration du panier
      * @returns boolean
@@ -195,12 +204,12 @@ export class CartService {
           this.productList.next(this.cartItemList);
           console.log("Panier restoré correctement: ");
           //console.log(this.cartItemList);
-          
-        }    
+
+        }
         return true ;
       }
       return false;
-  
+
     }
 
 }

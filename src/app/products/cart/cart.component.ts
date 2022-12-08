@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-cart',
@@ -81,11 +82,30 @@ export class CartComponent implements OnInit {
       venteG=true;
       TxC="en gros";
     }
-    if(confirm("Confirmez-vous la suppression de "+item.nom+" vendu "+TxC+" du panier ?")){
+    /* if(confirm("Confirmez-vous la suppression de "+item.nom+" vendu "+TxC+" du panier ?")){
 
       this.cartService.removeCartItem(item,venteG);
-    }
+    } */
     //alert("Ligne d'article correctement supprimée.")
+    Swal.fire({
+      title: 'Etes-vous sûr de vouloir supprimer?',
+      text: "Confirmez-vous la suppression de "+item.nom+" vendu "+TxC+" du panier ?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, Supprimer ce Produit!',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cartService.removeCartItem(item,venteG);
+        Swal.fire(
+          'Suppression!',
+          'Article supprimé avec succès.',
+          'success'
+        )
+      }
+    })
   }
 
   emptyCart(){
