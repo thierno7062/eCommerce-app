@@ -1,4 +1,29 @@
   <!-- Footer-->
-  <footer class="py-5 bg-primary" style="margin-top: 100%;">
-    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+  <footer class="py-5 bg-primary"  [style.margin-top]="product.length ==0 ? '25%' : ''">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; KSSV 2022</p></div>
 </footer>
+
+ <div
+        id="text-1"
+        class="w-full h-14 sm:h-20 px-4 md:px-6 z-49 border-t"
+        style="background-color: rgb(234, 18, 183); display: flex"
+    >
+
+        <div class="text-2">
+            <p>
+                <a
+                    href="#"
+                    style="
+
+                        font-style: normal;
+                        font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                            'Lucida Grande', 'Lucida Sans Unicode', Geneva,
+                            Verdana, sans-serif;
+                    "
+                    target="_blank"
+                    >Design by Paul & Aicha Machinerie &copy; {{ currentYear }}</a
+                >
+            </p>
+        </div>
+
+    </div>
