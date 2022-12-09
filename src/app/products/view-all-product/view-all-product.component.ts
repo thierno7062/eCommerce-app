@@ -52,10 +52,10 @@ export class ViewAllProductComponent implements OnInit {
 
       });
       //console.log(newListeArticles);
+      this.cartservice.restoreCartQteToArticleliste(newListeArticles);
       this.listArticles=newListeArticles;
-      //console.log(data);
-
     });
+
     this.cartservice.getProducts()
     .subscribe(res=>{
       //console.log(res);
@@ -103,13 +103,13 @@ export class ViewAllProductComponent implements OnInit {
   */
  updateQteDetail(article: any, qte: any){
   article.qteAVendreDetail= +qte ;
-  console.log(article.nom+ ": "+ article.qteAVendreDetail+" X "+ article.prix);
+  //console.log(article.nom+ ": "+ article.qteAVendreDetail+" X "+ article.prix);
   this.savePanierToStorage();
  }
 
  updateQteGros(article: any, qte: any){
   article.qteAVendreGros=+qte;
-  console.log(article.nom+ ": "+ article.qteAVendreGros+" X "+ article.prixvc);
+  //console.log(article.nom+ ": "+ article.qteAVendreGros+" X "+ article.prixvc);
   this.savePanierToStorage();
 }
 
@@ -120,7 +120,7 @@ export class ViewAllProductComponent implements OnInit {
   savePanierToStorage(){
     //Si le panier est vide on le sauvegardera pas
     if (this.cartservice.cartItemList.length == 0){
-      console.log("Panier vide. pas de sauvegarde.");
+      //console.log("Panier vide. pas de sauvegarde.");
       return false ;
     }
     const keyContenuePanier: string=this.panierKey+".contenue";
@@ -143,18 +143,14 @@ export class ViewAllProductComponent implements OnInit {
   restorePanierFromStorage(){
     //Si le panier n'existe pas en sauvegarde on a pas de restoration
     return this.cartservice.restorePanierFromStorage();
-    /*
-    const keyContenuePanier: string=this.panierKey+".contenue";
-    let panierSauv=this.stockage.get(keyContenuePanier);
-    if (panierSauv){
-      console.log("Panier disponible, restoration en cour ...");
-      this.cartservice.cartItemList= panierSauv;
-      if (this.cartservice.cartItemList.length>0){
-        console.log("Panier restoré correctement: ");
-      }
-      return true ;
-    }
-    return false; */
+
+  }
+
+  /**
+   * Permet de restorer les quantités sauvegardées du panier dans la liste des articles affichées dans la boutique
+   * @param listePdt 
+   */
+  restoreCartQteToArticleliste(listePdt: any){
 
   }
 
