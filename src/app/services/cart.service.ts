@@ -64,16 +64,28 @@ export class CartService {
    */
   addtoCart(product: any, qte: number,venteGros: number){
     
-    if (qte<=0){
-      return ;
-    }
+    
     //On va vérifier si l'article n'est pas dejà dans le panier
       let articleExistant=this.findArticle(product,false);
       if(articleExistant){
+        console.log('Vente en gros = '+venteGros);
+        if (qte<=0){
+          if (venteGros>0){
+            articleExistant.qteAVendreGros=0 ;          
+          }else{            
+            articleExistant.qteAVendreDetail=0;       
+          }
+          if (articleExistant.qteAVendreDetail==0 && articleExistant.qteAVendreGros==0){
+            this.removeCartItem(articleExistant);
+          }
+          return ;
+        }
         if (venteGros>0){
-          articleExistant.qteAVendreGros=qte ;          
+          articleExistant.qteAVendreGros=product.qteAVendreGros ;          
         }else{
-          articleExistant.qteAVendreDetail=qte;       
+          console.log(product.qteAVendreDetail);
+          
+          articleExistant.qteAVendreDetail=product.qteAVendreDetail;       
         }
         this.productList.next(this.cartItemList)
         this.getTotalPrice();
@@ -96,6 +108,11 @@ export class CartService {
         }else{
           product.qteAVendreDetail=qte;       
         }
+
+        if (product.qteAVendreDetail==0 && product.qteAVendreGros==0){
+          return ;
+        }
+
         console.log('Nouvel article ajouté au panier.');        
         this.cartItemList.push(product);
         this.savePanierToStorage();

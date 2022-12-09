@@ -86,14 +86,8 @@ export class ViewAllProductComponent implements OnInit {
  }
 
  addArticleToCart(article: any){
-  let venteGros=0;
-  if (article.qteAVendreGros>0){
-      venteGros=1;
-      this.cartservice.addtoCart(article,article.qteAVendreGros,venteGros);
-    }else{
-      venteGros=0;
-      this.cartservice.addtoCart(article,article.qteAVendreDetail,venteGros);
-    }
+      this.cartservice.addtoCart(article,article.qteAVendreGros,1);
+      this.cartservice.addtoCart(article,article.qteAVendreDetail,0);
  }
 
  /**
