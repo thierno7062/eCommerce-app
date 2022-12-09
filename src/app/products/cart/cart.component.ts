@@ -44,7 +44,6 @@ export class CartComponent implements OnInit {
             }
           }else{
             let vArticle=Object.assign({},art) ;
-            console.log(vArticle);
 
             if (qteDetail>0){
               vArticle.qteAVendreDetail=qteDetail ;
@@ -88,20 +87,20 @@ export class CartComponent implements OnInit {
     } */
     //alert("Ligne d'article correctement supprimée.")
     Swal.fire({
-      title: 'Etes-vous sûr de vouloir supprimer?',
-      text: "Confirmez-vous la suppression de "+item.nom+" vendu "+TxC+" du panier ?",
+      title: 'Supprimer '+ item.nom+' ['+TxC+'] ?',
+      text: "Confirmez-vous la suppression ?",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
       confirmButtonText: 'Oui, Supprimer ce Produit!',
       cancelButtonText: 'Annuler',
     }).then((result) => {
       if (result.isConfirmed) {
         this.cartService.removeCartItem(item,venteG);
         Swal.fire(
-          'Suppression!',
-          'Article supprimé avec succès.',
+          'Article supprimé du panier !',
+          item.nom+' ['+TxC+'] a été supprimé correctement.',
           'success'
         )
       }

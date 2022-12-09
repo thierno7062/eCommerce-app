@@ -63,42 +63,52 @@ export class CartService {
    * @param venteGros : 1= Oui ; 0= Non
    */
   addtoCart(product: any, qte: number,venteGros: number){
-    //On va vérifier si l'article n'est pas dejà dans le panier
+    
     if (qte<=0){
       return ;
     }
-      let articleExistant=this.findArticle(product);
-
-      if (venteGros>0){
-        product.qteAVendreGros=qte ;
-        if (articleExistant){
-          product.qteAVendreDetail=articleExistant.qteAVendreDetail;
+    //On va vérifier si l'article n'est pas dejà dans le panier
+      let articleExistant=this.findArticle(product,false);
+      if(articleExistant){
+        if (venteGros>0){
+          articleExistant.qteAVendreGros=qte ;          
+        }else{
+          articleExistant.qteAVendreDetail=qte;       
         }
+        this.productList.next(this.cartItemList)
+        this.getTotalPrice();
+        console.log(this.getTotalPrice());
+        this.savePanierToStorage();
+        console.log(this.cartItemList);
+
+        Swal.fire({
+          // position: 'top-end', Masqué pour affiché le modal au mileu de la page
+          icon: 'success',
+          title: 'Article mit à jour dans le Panier',
+          showConfirmButton: false,
+          timer: 500
+        })
+
       }else{
-        product.qteAVendreDetail=qte;
-        if (articleExistant){
-          product.qteAVendreGros=articleExistant.qteAVendreGros ;
+        //Nouvel article à ajouter au panier this.cartItemList
+        if (venteGros>0){
+          product.qteAVendreGros=qte ;          
+        }else{
+          product.qteAVendreDetail=qte;       
         }
+        console.log('Nouvel article ajouté au panier.');        
+        this.cartItemList.push(product);
+        this.savePanierToStorage();
+        this.getTotalPrice();        
+        this.productList.next(this.cartItemList)
+        Swal.fire({
+          // position: 'top-end', Masqué pour affiché le modal au mileu de la page
+          icon: 'success',
+          title: 'Nouvel article ajouté au Panier',
+          showConfirmButton: false,
+          timer: 500
+        })
       }
-
-      if (articleExistant){
-        console.log(articleExistant);
-        this.removeCartItem(articleExistant);
-      }
-    this.cartItemList.push(product);
-    this.productList.next(this.cartItemList)
-    this.getTotalPrice();
-    console.log(this.getTotalPrice());
-    this.savePanierToStorage();
-    console.log(this.cartItemList);
-
-    Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: 'Produit ajouté au Panier',
-      showConfirmButton: false,
-      timer: 1500
-    })
 
   }
 
@@ -121,41 +131,35 @@ export class CartService {
 
   removeCartItem(product: any, isVenteG: boolean=false){
     this.cartItemList.map((article:any, index: any)=>{
-      let articleTrouve=this.findArticle(product,false,isVenteG);
-
+      let articleTrouve=this.findArticle(product,false);
       if(articleTrouve){
         if (isVenteG == false){
           console.log("Suppression de la Qté détail de "+articleTrouve.nom);
           articleTrouve.qteAVendreDetail=0;
         }else{
-          console.log(articleTrouve.qteAVendreDetail);
-
+          //console.log(articleTrouve.qteAVendreDetail);
           console.log("Suppression de la Qté Gros de "+articleTrouve.nom);
           articleTrouve.qteAVendreGros=0;
         }
-
-        if (articleTrouve.qteAVendreDetail==0 && articleTrouve.qteAVendreGros==0){
-          console.log("Suppression de "+articleTrouve.nom+" du panier.");
-          this.cartItemList.splice(index, 1);
-          //this.productList.next(this.cartItemList);
-        }
-        //console.log(this.cartItemList);
-        if (this.cartItemList.length==0){
-          this.removeAllCart();
-          this.productList.next(this.cartItemList);
-        }else{
-          this.savePanierToStorage();
-          this.productList.next(this.cartItemList);
-        }
-      }else{
-        console.log("Impossible de trouver l'article dans le panier.");
-        //console.log(product);
-
       }
-
-
-
     })
+
+    let newListe: any=[];
+    let result=this.cartItemList.map((article:any, index: any)=>{
+      //On va enlever du panier les éments ayant au moins une quantité
+      if (article.qteAVendreDetail>0 || article.qteAVendreGros>0){
+        newListe.push(article);
+      }
+    })
+        
+    this.cartItemList=newListe;
+
+    if (+this.cartItemList.length==0){
+      this.removeAllCart();
+    }
+    this.savePanierToStorage();
+    console.log('Reste dans le panier '+this.cartItemList.length+' élément(s).');
+    this.productList.next(this.cartItemList);
 
   }
 
@@ -211,5 +215,43 @@ export class CartService {
       return false;
 
     }
+
+  /**
+   * Permet de restorer les quantités sauvegardées du panier dans la liste des articles affichées dans la boutique
+   * 
+   */
+  restoreCartQteToArticleliste(listeArticle: any=null){
+      if (!listeArticle){
+        console.log("Liste vide, vous n'avez aucun article à vendre !!!");
+        return;
+      }
+      if (listeArticle.length==0){
+        console.log("La liste des articles de la boutique est vide");
+        return;
+      }
+      console.log("Mise à jour des quantités précedemment saisie dans la panier sur la boutique...");
+
+      const keyContenuePanier: string=this.panierKey+".contenue";
+      let panierSauv=this.stockage.get(keyContenuePanier);
+      if (panierSauv){
+        panierSauv.forEach((artPanier: any) => {
+          listeArticle.forEach((artB: any) => {
+            if (artPanier.id==artB.id){          
+                if (artPanier.qteAVendreGros>0){
+                  artB.qteAVendreGros=artPanier.qteAVendreGros;
+                }
+                if (artPanier.qteAVendreDetail>0){
+                  artB.qteAVendreDetail=artPanier.qteAVendreDetail;
+                }
+            }
+          });
+          
+        });
+      }
+      console.log(this.cartItemList);      
+      console.log("Mise à jour terminée.");
+      this.productList.next(this.cartItemList);
+
+  }
 
 }
