@@ -25,12 +25,19 @@ export class ViewAllProductComponent implements OnInit {
 
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
     private stockage: LocalStorageService) {
-    this.route.queryParams.subscribe(params => {
-      environment.idClient = params['IDCLT'];
-      this.stockage.set("IDCLIENT",environment.idClient);
-      this.restorePanierFromStorage();
-      //console.log(environment.idClient);
-    });
+      const keyIdClient: string=this.panierKey+".IDCLIENT";
+      console.log(this.stockage.get(keyIdClient));
+      
+      environment.idClient=this.stockage.get(keyIdClient);
+
+      this.route.queryParams.subscribe(params => {
+        if (params['IDCLT']){
+          environment.idClient = params['IDCLT'];
+          this.stockage.set(keyIdClient,environment.idClient);
+        }      
+        this.restorePanierFromStorage();
+        //console.log(environment.idClient);
+      });
   }
 
   ngOnInit(): void {

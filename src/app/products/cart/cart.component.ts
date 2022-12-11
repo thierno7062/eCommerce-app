@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { NabysyFactureService } from 'src/app/nabysy-facture.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ export class CartComponent implements OnInit {
   public grandTotal:number=0;
   public listePanier: any=[];
   searchText:string | any;
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private nabysyService: NabysyFactureService) { }
 
   ngOnInit(): void {
     this.cartService.getProducts()
@@ -109,6 +110,38 @@ export class CartComponent implements OnInit {
 
   emptyCart(){
     this.cartService.removeAllCart();
+  }
+
+  envoyerCommande(){
+    if (this.listePanier.length==0){
+      Swal.fire(
+        'Panier Vide !',
+        '',
+        'warning'
+      )
+      return ;
+    }
+
+    this.nabysyService.envoiePanier(this.listePanier).subscribe(data=>{
+      console.log(data);      
+      let Reponse=data;
+      if (Reponse.OK>0){
+        Swal.fire(
+          'Envoie de la commande réussit !',
+          'Votre Numero de Commande: '+Reponse.Extra,
+          'success'
+        );
+        this.cartService.removeAllCart();
+        //On ferme la page et on retourne vers WhatsApp ou bien ?
+        window.close();
+      }else{
+        Swal.fire(
+          'Commande non envoyée !',
+          Reponse.TxErreur,
+          'warning'
+        )
+      }
+    })
   }
 
 }

@@ -83,15 +83,14 @@ export class CartService {
         if (venteGros>0){
           articleExistant.qteAVendreGros=product.qteAVendreGros ;          
         }else{
-          console.log(product.qteAVendreDetail);
-          
+          //console.log(product.qteAVendreDetail);          
           articleExistant.qteAVendreDetail=product.qteAVendreDetail;       
         }
         this.productList.next(this.cartItemList)
         this.getTotalPrice();
-        console.log(this.getTotalPrice());
+        //console.log(this.getTotalPrice());
         this.savePanierToStorage();
-        console.log(this.cartItemList);
+        //console.log(this.cartItemList);
 
         Swal.fire({
           // position: 'top-end', Masqué pour affiché le modal au mileu de la page
