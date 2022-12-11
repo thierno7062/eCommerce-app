@@ -54,7 +54,7 @@
   <div class="center"  style="margin-top: 100px;">
     <h4>Votre panier est vide!</h4>
     <h6>Ajoutez des articles maintenant !</h6>
-    <button routerLink="/products" class="btn btn-success">acheter</button>
+    <button routerLink="/products" class="btn btn-success">Voir la Boutique</button>
   </div>
 
 </ng-container>
@@ -66,7 +66,7 @@
         <td colspan="4"><h4 >Panier: {{product.length}} </h4></td>
         <td><button (click)="emptyCart()" class="btn btn-danger">Vider le Panier</button></td>
         <td><button routerLink="/products" class="btn btn-primary">Acheter Plus</button></td>
-        <td><button class="btn btn-success">Valider</button></td>
+        <td><button (click)="envoyerCommande()" class="btn btn-success">Envoyer la Commande</button></td>
         <td><h2 style="border: 1px black solid;">Total Facture: {{grandTotal}}</h2></td>
       </tr>
     </tbody>
