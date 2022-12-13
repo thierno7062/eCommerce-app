@@ -5,6 +5,7 @@ import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService, LocalStorage } from 'angular-web-storage';
+import { NgImageSliderComponent } from 'ng-image-slider';
 
 @Component({
   selector: 'app-view-all-product',
@@ -27,14 +28,14 @@ export class ViewAllProductComponent implements OnInit {
     private stockage: LocalStorageService) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
-      
+
       environment.idClient=this.stockage.get(keyIdClient);
 
       this.route.queryParams.subscribe(params => {
         if (params['IDCLT']){
           environment.idClient = params['IDCLT'];
           this.stockage.set(keyIdClient,environment.idClient);
-        }      
+        }
         this.restorePanierFromStorage();
         //console.log(environment.idClient);
       });
@@ -149,7 +150,7 @@ export class ViewAllProductComponent implements OnInit {
 
   /**
    * Permet de restorer les quantités sauvegardées du panier dans la liste des articles affichées dans la boutique
-   * @param listePdt 
+   * @param listePdt
    */
   restoreCartQteToArticleliste(listePdt: any){
 
@@ -162,4 +163,5 @@ export class ViewAllProductComponent implements OnInit {
   hello(mex: string){
       alert('Hello '+mex+'!' );
   }
+
 }
