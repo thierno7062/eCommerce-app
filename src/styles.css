@@ -11,3 +11,7 @@ footer{
 .navbar-brand{
   color: white !important;
 }
+
+/* Pour la galerie lightGallery */
+@import '~lightgallery/scss/lightgallery';
+/* --------------------------------------------- */

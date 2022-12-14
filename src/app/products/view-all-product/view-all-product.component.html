@@ -28,6 +28,22 @@
                   <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
                   <!-- Product details-->
                   <div class="card-body p-4">
+                    <!-- Galerie Light Gallery -->
+                      <lightgallery >
+                        <div *ngIf="let photo of prod.gallerie" >
+                          <a href="#">
+                            <img alt="{{prod.nom}}" src="photo" />
+                          </a>
+                        </div>
+                    <!--<a href="img/img1.jpg">
+                            <img alt="img1" src="img/thumb1.jpg" />
+                        </a>
+                        <a href="img/img1.jpg">
+                            <img alt="img2" src="img/thumb1.jpg" />
+                        </a> -->
+                      </lightgallery>
+                    <!--                          -->
+
                       <div class="text-center">
                           <!-- Product name-->
                           <h5 class="fw-bolder"><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5>

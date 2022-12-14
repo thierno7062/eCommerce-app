@@ -6,6 +6,12 @@ import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService, LocalStorage } from 'angular-web-storage';
 
+/** GELERIE */
+//import { LightgalleryModule } from 'lightgallery/angular'; //Pour angular 14+
+import { LightgalleryModule } from 'lightgallery/angular/13'; // Pour Angular 13
+
+/******************************************************************************* */
+
 @Component({
   selector: 'app-view-all-product',
   templateUrl: './view-all-product.component.html',
@@ -23,8 +29,10 @@ export class ViewAllProductComponent implements OnInit {
   public openMenu: boolean = false;
   isOver = false;
 
+  public gallerySettings: any ;
+
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
-    private stockage: LocalStorageService) {
+    private stockage: LocalStorageService, private lightGallery: LightgalleryModule) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
       

@@ -10,6 +10,9 @@ import { SiteLayoutModule } from './site-layout/site-layout.module';
 import { AngularWebStorageModule } from 'angular-web-storage';
 // import { MatIconModule } from '@angular/material/icon';
 // import { MatButtonModule } from '@angular/material/button';
+//import { LightgalleryModule } from 'lightgallery/angular ;
+import { LightgalleryModule } from 'lightgallery/angular/13';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,6 +25,7 @@ import { AngularWebStorageModule } from 'angular-web-storage';
     SiteLayoutModule,
     ProductsModule,
     AngularWebStorageModule,
+    LightgalleryModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
