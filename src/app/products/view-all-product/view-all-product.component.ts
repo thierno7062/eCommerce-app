@@ -1,20 +1,32 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild,NgModule, VERSION } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService, LocalStorage } from 'angular-web-storage';
-import { NgImageSliderComponent } from 'ng-image-slider';
+
+import { LightgalleryModule } from 'lightgallery/angular';
+import { LightgalleryComponent } from 'lightgallery/angular';
+import lgZoom from 'lightgallery/plugins/zoom';
+import { BeforeSlideDetail } from 'lightgallery/lg-events';
+import { BrowserModule } from '@angular/platform-browser';
+
+
+
+//import { NgImageSliderComponent } from 'ng-image-slider';
 
 @Component({
   selector: 'app-view-all-product',
   templateUrl: './view-all-product.component.html',
   styleUrls: ['./view-all-product.component.css']
 })
+
+
 export class ViewAllProductComponent implements OnInit {
   productList: any;
   listArticles: any;
+
   @ViewChild('quantiteDetail') quantiteDetail:ElementRef | undefined;
   @ViewChild('quantiteGros') quantiteGros:ElementRef | undefined;
 
@@ -23,6 +35,17 @@ export class ViewAllProductComponent implements OnInit {
 
   public openMenu: boolean = false;
   isOver = false;
+
+  title = 'eCommerce-app';
+  name = "Angular " + VERSION.full ;
+  settings = {
+    counter: false,
+    plugins: [lgZoom]
+  };
+  onBeforeSlide = (detail: BeforeSlideDetail): void => {
+    const { index, prevIndex } = detail;
+    console.log(index, prevIndex);
+  };  
 
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
     private stockage: LocalStorageService) {
@@ -39,7 +62,10 @@ export class ViewAllProductComponent implements OnInit {
         this.restorePanierFromStorage();
         //console.log(environment.idClient);
       });
+      
   }
+
+  
 
   ngOnInit(): void {
   /*   this.productService.viewProduct().subscribe(data=>{

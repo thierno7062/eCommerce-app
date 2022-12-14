@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, VERSION } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProductsRoutingModule } from './products-routing.module';
@@ -11,6 +11,11 @@ import { ViewAllProductComponent } from './view-all-product/view-all-product.com
 import { ViewProductByDateComponent } from './view-product-by-date/view-product-by-date.component';
 import { ViewProductByCategoryComponent } from './view-product-by-category/view-product-by-category.component';
 
+import { LightgalleryModule } from 'lightgallery/angular';
+import { LightgalleryComponent } from 'lightgallery/angular';
+import lgZoom from 'lightgallery/plugins/zoom';
+import { BeforeSlideDetail } from 'lightgallery/lg-events';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -25,7 +30,23 @@ import { ViewProductByCategoryComponent } from './view-product-by-category/view-
   ],
   imports: [
     CommonModule,
-    ProductsRoutingModule
+    ProductsRoutingModule ,
+    BrowserModule,
+    LightgalleryModule,
   ]
 })
-export class ProductsModule { }
+
+
+export class ProductsModule {
+  title = 'eCommerce-app';
+  name = "Angular " + VERSION.full ;
+  settings = {
+    counter: false,
+    plugins: [lgZoom]
+  };
+  onBeforeSlide = (detail: BeforeSlideDetail): void => {
+    const { index, prevIndex } = detail;
+    console.log(index, prevIndex);
+  };
+
+ }
