@@ -14,10 +14,12 @@ import { SwiperModule } from 'swiper/angular';
 import {CarouselModule} from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 // import { MatIconModule } from '@angular/material/icon';
 // import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +37,8 @@ import {ToastModule} from 'primeng/toast';
     CarouselModule,
     ButtonModule,
     ToastModule,
-    
+    ReactiveFormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

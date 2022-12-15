@@ -6,6 +6,8 @@ import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService, LocalStorage } from 'angular-web-storage';
 import { NgImageSliderComponent } from 'ng-image-slider';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-view-all-product',
@@ -26,8 +28,10 @@ export class ViewAllProductComponent implements OnInit {
 
   responsiveOptions: any;
 
+  formValue!: FormGroup
+
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
-    private stockage: LocalStorageService) {
+    private stockage: LocalStorageService,private formBuilder: FormBuilder) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
 
@@ -62,6 +66,9 @@ export class ViewAllProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.formValue=this.formBuilder.group({
+      name:['',Validators.required],
+    })
   /*   this.productService.viewProduct().subscribe(data=>{
       this.productList=data;
       console.log(data);
@@ -187,7 +194,16 @@ export class ViewAllProductComponent implements OnInit {
   ShowArticle(art: any){
     //Ouvre le modal contenant la gallerie
     console.log('Je vais ouvrir la gallerie pour '+art.nom);
-    
+
   }
 
+  add(){
+  }
+  edit(data: any){
+    // this.studentmodelobj.id = data.id;
+
+    this.formValue.controls['name'].setValue(data.name)
+    this.formValue.controls['email'].setValue(data.email)
+  }
+  addstudent(){}
 }

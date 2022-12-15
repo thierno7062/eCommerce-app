@@ -1,10 +1,10 @@
 <!-- Header-->
-<header class="bg-dark ">
-  <div class="container ">
-      <div class="text-center text-white">
-          <h1 class="display-4 fw-bolder">Bienvenue à KSSV</h1>
-      </div>
-      <!-- <div class="item-right" routerLink="cart">
+<header class="bg-dark">
+  <div class="container">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Bienvenue à KSSV</h1>
+    </div>
+    <!-- <div class="item-right" routerLink="cart">
         <button class="btn btn-outline-light" type="submit">
           <i class="bi-cart-fill me-1"  routerLink="cart"></i>
           Panier
@@ -15,67 +15,278 @@
 </header>
 <!-- Section-->
 <!-- <section class="py-5"> -->
-  <section class="">
+<section class="">
   <div class="container px-1 px-lg-4 mt-5">
-      <div class="row gx-4 gx-lg-1 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
-
-          <div class="col mb-5" *ngFor="let prod of listArticles" >
-              <div class="card h-100" >
-                  <!-- Sale badge-->
-                  <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
-                  
-                  <div class="card-body p-4">
-                      <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
-                        <ng-template pTemplate="header">
-                            <h5><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5>
-                        </ng-template>
-                        <ng-template let-photoUrl pTemplate="item">
-                            <div class="item card" (click)="ShowArticle(prod)">
-                                <img src="{{photoUrl}}" class="card-img-top" alt="...">
-                            </div>
-                        </ng-template>
-                      </p-carousel>
-                      <div class="text-center">
-                          <!-- Product reviews-->
-                          <div class="d-flex justify-content-center small text-warning mb-2">
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
-                          </div>
-                          <!-- Product price-->
-                          <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
-                        </div>
-                      </div>
-                      <!-- Product actions: Vente au Détail-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
-                      <small>{{prod.prix }} FCFA / {{prod.united}}</small>
-                      <div><p>Qte {{prod.united}} : <input class="td-flex justify-content-center small text-warning mb-2" type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} placeholder="quantité en pièce..." ></p></div>
-                      <!-- <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div> -->
-                    </div>
-
-                    <!-- Product actions: Vente en Gros-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
-                        <small>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </small>
-                        <div class="d-flex justify-content-center small text-warning mb-2"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} placeholder="quantité en carton..." ></p></div>
-                    </div>
-
-                    <!-- Bouton Ajouter-->
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addArticleToCart(prod)">Ajouter au Panier</a></div>
-              </div>
+    <div
+      class="row gx-4 gx-lg-1 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center"
+    >
+      <div class="col mb-5" *ngFor="let prod of listArticles">
+        <div class="card h-100">
+          <!-- Sale badge-->
+          <div
+            *ngIf="prod.PROMOS == 1"
+            class="badge bg-danger text-white position-absolute"
+            style="top: 0.5rem; right: 0.5rem"
+          >
+            Promos
           </div>
 
+          <div class="card-body p-4">
+            <p-carousel
+              [value]="prod.GALLERIE"
+              styleClass="custom-carousel"
+              [numVisible]="1"
+              [numScroll]="1"
+              [circular]="true"
+              [autoplayInterval]="3000"
+              [responsiveOptions]="responsiveOptions"
+            >
+              <ng-template pTemplate="header">
+                <h5>
+                  <a routerLink="view-product/{{ prod.id }}">{{ prod.nom }}</a>
+                </h5>
+              </ng-template>
+              <ng-template let-photoUrl pTemplate="item">
+                <div class="item card" (click)="ShowArticle(prod)">
+                  <img src="{{ photoUrl }}" class="card-img-top" alt="..." />
+                </div>
+              </ng-template>
+            </p-carousel>
+            <div class="text-center">
+              <!-- Product reviews-->
+              <div
+                class="d-flex justify-content-center small text-warning mb-2"
+              >
+                <div class="bi-star-fill"></div>
+                <div class="bi-star-fill"></div>
+              </div>
+              <!-- Product price-->
+              <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
+            </div>
+          </div>
+          <div class="text-center small" style="margin-bottom: 5%;">
+            <small>{{ prod.prix }} FCFA / {{ prod.united }}</small> <br>
+          <small>Prix {{ prod.unitec }}: {{ prod.prixvc }} F CFA </small>
+          </div>
+
+          <!-- Product actions: Vente au Détail-->
+          <!-- <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
+            <small>{{ prod.prix }} FCFA / {{ prod.united }}</small>
+            <div>
+              <p>
+                Qte {{ prod.united }} :
+                <input
+                  class="td-flex justify-content-center small text-warning mb-2"
+                  type="number"
+                  #quantiteDetail
+                  min="0"
+                  (input)="updateQteDetail(prod, quantiteDetail.value)"
+                  value="{{ prod.qteAVendreDetail }}"
+                  placeholder="quantité en pièce..."
+                />
+              </p>
+            </div>
+          </div> -->
+          <!-- <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div> -->
+
+          <!-- Product actions: Vente en Gros-->
+          <!-- <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
+            <small>Prix {{ prod.unitec }}: {{ prod.prixvc }} F CFA </small>
+            <div class="d-flex justify-content-center small text-warning mb-2">
+              <p>
+                Qte {{ prod.unitec }} :
+                <input
+                  type="number"
+                  #quantiteGros
+                  min="0"
+                  (input)="updateQteGros(prod, quantiteGros.value)"
+                  value="{{ prod.qteAVendreGros }}"
+                  placeholder="quantité en carton..."
+                />
+              </p>
+            </div>
+          </div> -->
+
+          <!-- Bouton Ajouter-->
+          <div class="text-center">
+            <a
+            class="btn btn-outline-dark mt-auto"
+
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              >Ajouter au Panier</a
+            >
+          </div>
+        </div>
+
+        <!-- ********************************************************************************* -->
+
+
+        <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: blue">
+              <h5
+                style="
+                  color: aliceblue;
+                  font-size: 26px;
+                  margin-left: 62px;
+                  font-weight: 620;
+                "
+                class="modal-title"
+                id="exampleModalLabel"
+              >
+                COMMANDE KSSV
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <form [formGroup]="formValue">
+
+            <small>{{ prod.prix }} FCFA / {{ prod.united }}</small>
+            <div class="form-group  bg-transparent text-center">
+              <div>
+                <p>
+                  Qte {{ prod.united }} :
+                  <input
+                    class="td-flex justify-content-center small text-warning mb-2"
+                    type="number"
+                    #quantiteDetail
+                    min="0"
+                    formControlName="name"
+                    (input)="updateQteDetail(prod, quantiteDetail.value)"
+                    value="{{ prod.qteAVendreDetail }}"
+                    placeholder="quantité en pièce..."
+                  />
+                </p>
+              </div>
+              <!-- <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div> -->
+            </div>
+
+            <!-- Product actions: Vente en Gros-->
+            <small>Prix {{ prod.unitec }}: {{ prod.prixvc }} F CFA </small>
+            <div class="form-group bg-transparent  text-center">
+              <div class="d-flex justify-content-center small text-warning mb-2">
+                <p>
+                  Qte {{ prod.unitec }} :
+                  <input
+                    type="number"
+                    #quantiteGros
+                    min="0"
+                    formControlName="name"
+                    (input)="updateQteGros(prod, quantiteGros.value)"
+                    value="{{ prod.qteAVendreGros }}"
+                    placeholder="quantité en carton..."
+                  />
+                </p>
+              </div>
+            </div>
+          </form>
+            <div class="modal-body">
+              <form [formGroup]="formValue">
+                <!-- <div class="form-group">
+                  <label for="exampleInputEmail1">Name</label>
+                  <input
+                    type="name"
+                    formControlName="name"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter your name"
+                  />
+                  <small
+                    *ngIf="
+                      formValue.get('name')?.invalid && formValue.get('name')?.touched
+                    "
+                    class="text-danger"
+                    >Name is Required</small
+                  >
+                </div>
+                <br />
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email</label>
+                  <input
+                    type="email"
+                    formControlName="email"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter your email"
+                  />
+                  <small
+                    *ngIf="
+                      formValue.get('email')?.invalid &&
+                      formValue.get('email')?.touched
+                    "
+                    class="text-danger"
+                    >email is Required</small
+                  >
+                </div>
+                <br /> -->
+
+              </form>
+            </div>
+            <div style="background: blue" class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+
+              (click)="addArticleToCart(prod)"
+                [disabled]="formValue.invalid"
+                type="button"
+                class="btn btn-success"
+                data-bs-dismiss="modal"
+                >
+                Add
+              </button>
+              <!-- <button
+                *ngIf="showupdate"
+                type="button"
+                [disabled]="formValue.invalid"
+                (click)="update()"
+                class="btn btn-success"
+              >
+                Update
+              </button> -->
+            </div>
+          </div>
+        </div>
       </div>
+
+    <!-- ******************************************************************** -->
+      </div>
+    </div>
   </div>
   <!-- oscuratore -->
-<div class="dialog_scrim" *ngIf="openMenu">
-</div>
-<button mat-fab color="warning" (click)="clickMenu()"
+  <div class="dialog_scrim" *ngIf="openMenu"></div>
+  <button
+    mat-fab
+    color="warning"
+    (click)="clickMenu()"
     class="menu-button"
     routerLink="cart"
-    >
-  <i class="material-icons" >shopping_cart</i>
-  <span class="badge bg-dark text-white ms-1 rounded-pill">{{totalItem}}</span>
-</button>
-<!-- <button mat-fab color="warning" (click)="clickMenu()"
+  >
+    <i class="material-icons">shopping_cart</i>
+    <span class="badge bg-dark text-white ms-1 rounded-pill">{{
+      totalItem
+    }}</span>
+  </button>
+  <!-- <button mat-fab color="warning" (click)="clickMenu()"
     class="menu-button"
     [class.mat-elevation-z2]="!isOver"
     [class.mat-elevation-z8]="isOver"
@@ -86,8 +297,8 @@
   <span class="badge bg-dark text-white ms-1 rounded-pill">{{totalItem}}</span>
 </button> -->
 
-<!-- menu button -->
-<!-- <button mat-mini-fab
+  <!-- menu button -->
+  <!-- <button mat-mini-fab
   class="action-button one mat-elevation-z8"
   *ngIf="openMenu"
   color="basic"
@@ -118,3 +329,4 @@
   Accueil
 </button> -->
 </section>
+
