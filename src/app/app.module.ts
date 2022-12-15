@@ -8,13 +8,20 @@ import { OdersModule } from './oders/oders.module';
 import { ProductsModule } from './products/products.module';
 import { SiteLayoutModule } from './site-layout/site-layout.module';
 import { AngularWebStorageModule } from 'angular-web-storage';
-import { NgImageSliderModule } from 'ng-image-slider';
+
+import { ViewAllProductComponent } from './products/view-all-product/view-all-product.component';
+import { SwiperModule } from 'swiper/angular';
+import {CarouselModule} from 'primeng/carousel';
+import {ButtonModule} from 'primeng/button';
+import {ToastModule} from 'primeng/toast';
+
 
 // import { MatIconModule } from '@angular/material/icon';
 // import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
+    ViewAllProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,7 +31,11 @@ import { NgImageSliderModule } from 'ng-image-slider';
     SiteLayoutModule,
     ProductsModule,
     AngularWebStorageModule,
-    NgImageSliderModule
+    SwiperModule,
+    CarouselModule,
+    ButtonModule,
+    ToastModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

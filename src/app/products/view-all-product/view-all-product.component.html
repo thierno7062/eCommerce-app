@@ -23,20 +23,21 @@
               <div class="card h-100" >
                   <!-- Sale badge-->
                   <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
-                  <!-- Product image-->
-                  <img class="card-img-top" [src]=" prod.photo  " alt="..." style="height: 100%;"/>
-
-                  <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
-                  <!-- Product details-->
+                  
                   <div class="card-body p-4">
+                      <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
+                        <ng-template pTemplate="header">
+                            <h5><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5>
+                        </ng-template>
+                        <ng-template let-photoUrl pTemplate="item">
+                            <div class="item card" (click)="ShowArticle(prod)">
+                                <img src="{{photoUrl}}" class="card-img-top" alt="...">
+                            </div>
+                        </ng-template>
+                      </p-carousel>
                       <div class="text-center">
-                          <!-- Product name-->
-                          <h5 class="fw-bolder"><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5>
                           <!-- Product reviews-->
                           <div class="d-flex justify-content-center small text-warning mb-2">
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
                               <div class="bi-star-fill"></div>
                               <div class="bi-star-fill"></div>
                           </div>
