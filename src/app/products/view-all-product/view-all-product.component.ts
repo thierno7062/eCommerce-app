@@ -24,6 +24,8 @@ export class ViewAllProductComponent implements OnInit {
   public openMenu: boolean = false;
   isOver = false;
 
+  responsiveOptions: any;
+
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
     private stockage: LocalStorageService) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
@@ -39,6 +41,24 @@ export class ViewAllProductComponent implements OnInit {
         this.restorePanierFromStorage();
         //console.log(environment.idClient);
       });
+
+      this.responsiveOptions = [
+        {
+            breakpoint: '1024px',
+            numVisible: 3,
+            numScroll: 3
+        },
+        {
+            breakpoint: '768px',
+            numVisible: 2,
+            numScroll: 2
+        },
+        {
+            breakpoint: '560px',
+            numVisible: 1,
+            numScroll: 1
+        }
+      ];
   }
 
   ngOnInit(): void {
@@ -162,6 +182,12 @@ export class ViewAllProductComponent implements OnInit {
 
   hello(mex: string){
       alert('Hello '+mex+'!' );
+  }
+
+  ShowArticle(art: any){
+    //Ouvre le modal contenant la gallerie
+    console.log('Je vais ouvrir la gallerie pour '+art.nom);
+    
   }
 
 }
