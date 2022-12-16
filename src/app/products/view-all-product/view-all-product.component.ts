@@ -28,10 +28,8 @@ export class ViewAllProductComponent implements OnInit {
 
   responsiveOptions: any;
 
-  formValue!: FormGroup
-
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
-    private stockage: LocalStorageService,private formBuilder: FormBuilder) {
+    private stockage: LocalStorageService) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
 
@@ -66,9 +64,6 @@ export class ViewAllProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formValue=this.formBuilder.group({
-      name:['',Validators.required],
-    })
   /*   this.productService.viewProduct().subscribe(data=>{
       this.productList=data;
       console.log(data);
@@ -197,13 +192,4 @@ export class ViewAllProductComponent implements OnInit {
 
   }
 
-  add(){
-  }
-  edit(data: any){
-    // this.studentmodelobj.id = data.id;
-
-    this.formValue.controls['name'].setValue(data.name)
-    this.formValue.controls['email'].setValue(data.email)
-  }
-  addstudent(){}
 }

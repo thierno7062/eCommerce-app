@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddProductComponent } from './add-product/add-product.component';
+import { CartComponent } from './cart/cart.component';
 import { DeleteProductComponent } from './delete-product/delete-product.component';
 import { ProductsComponent } from './products.component';
 import { UpdateProductComponent } from './update-product/update-product.component';
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'searchdate', component: ViewProductByDateComponent },
   { path: 'delete-product/:id', component: DeleteProductComponent },
   { path: 'update-product/:id', component: UpdateProductComponent },
+  { path: 'cart', component: CartComponent}
 
 ];
 
