@@ -26,7 +26,7 @@ export class ProductService {
     return this.httpclient.get<Product>(baseUrl);
   }
   viewProduct2(){
-    const baseUrl=environment.endPoint+'?Action=GET_LISTE_PRODUIT_WHATSAPP&IDCATEGORIE=1';
+    const baseUrl=environment.endPoint+'?Action=GET_LISTE_PRODUIT_WHATSAPP&IDCATEGORIE=1&IDCLIENT='+environment.idClient;
     return this.http.get<any>(baseUrl);
   }
 
