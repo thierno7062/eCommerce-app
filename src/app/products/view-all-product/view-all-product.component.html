@@ -16,20 +16,35 @@
 <!-- Section-->
 <!-- <section class="py-5"> -->
   <section class="">
+
+    <!-- <div class="container">
+      <div class="row">
+        <div class="col-md">
+          Carte 1
+        </div>
+        <div class="col-md">
+          Carte 2
+        </div>
+        <div class="col-md">
+          Carte 3
+        </div>
+      </div>
+    </div> -->
+
   <div class="container px-1 px-lg-4 mt-5">
       <div class="row gx-4 gx-lg-1 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
 
-          <div class="col mb-5" *ngFor="let prod of listArticles" >
+          <div class="col-md" *ngFor="let prod of listArticles" >
               <div class="card h-100" >
                   <!-- Sale badge-->
                   <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
 
-                  <div class="card-body p-4">
+                  <div class="card-body p-4" >
                       <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
                         <ng-template pTemplate="header">
                             <h5><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5>
                         </ng-template>
-                        <ng-template let-photoUrl pTemplate="item">
+                        <ng-template let-photoUrl pTemplate="item" (click)="ShowArticle(prod)">
                             <div class="item card" (click)="ShowArticle(prod)">
                                 <img src="{{photoUrl}}" class="card-img-top" alt="...">
                             </div>

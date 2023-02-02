@@ -8,7 +8,6 @@ import {LocalStorageService, LocalStorage } from 'angular-web-storage';
 import { NgImageSliderComponent } from 'ng-image-slider';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-
 @Component({
   selector: 'app-view-all-product',
   templateUrl: './view-all-product.component.html',
