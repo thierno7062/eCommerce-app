@@ -1,12 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
-import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
-import {LocalStorageService, LocalStorage } from 'angular-web-storage';
-import { NgImageSliderComponent } from 'ng-image-slider';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {LocalStorageService } from 'angular-web-storage';
+
+import { ModalServiceService } from 'src/app/services/modal-service.service';
 
 @Component({
   selector: 'app-view-all-product',
@@ -28,7 +27,7 @@ export class ViewAllProductComponent implements OnInit {
   responsiveOptions: any;
 
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
-    private stockage: LocalStorageService) {
+    private stockage: LocalStorageService, protected modalService: ModalServiceService) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
 
@@ -188,6 +187,8 @@ export class ViewAllProductComponent implements OnInit {
   ShowArticle(art: any){
     //Ouvre le modal contenant la gallerie
     console.log('Je vais ouvrir la gallerie pour '+art.nom);
+    this.modalService.open(art.id)
+    console.log("IdArt="+art.id);
 
   }
 

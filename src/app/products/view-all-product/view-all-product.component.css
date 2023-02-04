@@ -156,3 +156,30 @@ img {vertical-align: middle;}
 .modal-content{
   text-align: center;
 }
+
+.outer-div {
+  padding: 30px;
+  text-align: center;
+}
+
+.prixdetail {
+  background-color: #e5e163;
+  color: black; 
+  display: inline-block;
+  padding: 5px;
+  text-align: center;
+  position: static;
+  left: 25%;
+  width: 100%;
+}
+
+.prixcarton {
+  background-color: #04d408;
+  color: black; 
+  display: inline-block;
+  padding: 5px;
+  text-align: center;
+  position: static;
+  left: 25%;
+  width: 100%;
+}
