@@ -13,14 +13,17 @@ export class CartComponent implements OnInit {
   public product:any=[];
   public grandTotal:number=0;
   public listePanier: any=[];
+  public grandTotalFormat: any;
+
   searchText:string | any;
   constructor(private cartService: CartService, private nabysyService: NabysyFactureService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.cartService.getProducts()
     .subscribe(res=>{
       this.product=res;
       this.grandTotal=this.cartService.getTotalPrice();
+      this.grandTotalFormat=this.formatToMillier(this.grandTotal);
 
       //Convertir le contenue du Panier pour séparer les qtés en gros et les détails à part
       let vListe=new Array;
@@ -143,5 +146,9 @@ export class CartComponent implements OnInit {
       }
     })
   }
+
+  formatToMillier(montant: number){
+    return montant.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1 ');
+  }  
 
 }

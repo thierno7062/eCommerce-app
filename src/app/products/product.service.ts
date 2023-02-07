@@ -25,8 +25,14 @@ export class ProductService {
     const baseUrl='http://localhost:3000/products/';
     return this.httpclient.get<Product>(baseUrl);
   }
-  viewProduct2(){
-    const baseUrl=environment.endPoint+'?Action=GET_LISTE_PRODUIT_WHATSAPP&IDCATEGORIE=1&IDCLIENT='+environment.idClient;
+  viewProduct2(paginationStart: number=0, nbLigne:number=20){
+    let baseUrl=environment.endPoint+'?Action=GET_LISTE_PRODUIT_WHATSAPP&IDCATEGORIE=1&IDCLIENT='+environment.idClient;
+    if (paginationStart>0){
+      baseUrl += '&PAGE_START='+paginationStart;
+      if (nbLigne){
+        baseUrl +='&PAGE_NBLIGNE='+nbLigne;
+      }
+    }
     return this.http.get<any>(baseUrl);
   }
 
