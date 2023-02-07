@@ -2,7 +2,7 @@
 <header class="bg-dark ">
   <div class="container ">
       <div class="text-center text-white">
-          <h1 class="display-4 fw-bolder">Bienvenue à KSSV</h1>
+          <h1 class="display-5 fw-bolder">Boutique Keur Serigne Saliou Vaisselle</h1>
       </div>
       <!-- <div class="item-right" routerLink="cart">
         <button class="btn btn-outline-light" type="submit">
@@ -35,6 +35,28 @@
       <div class="row gx-4 gx-lg-1 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
 
           <div class="col-md" *ngFor="let prod of listArticles" >
+              <!-- Modal d'affichage unique -->
+              <jw-modal id={{prod.id}}>
+                <h1>{{prod.nom}}</h1>
+                <p style="padding-bottom: 100px; margin-top:100px;"> 
+                  <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
+                    <ng-template pTemplate="header">
+                        <h5>{{prod.nom}}</h5>
+                    </ng-template>
+                    <ng-template let-photoUrl pTemplate="item" (click)="ShowArticle(prod)">
+                        <div class="item card" (click)="ShowArticle(prod)">
+                            <img src="{{photoUrl}}" class="card-img-top" alt="...">
+                        </div>
+                    </ng-template>
+                  </p-carousel>
+                </p>
+                <!-- <button (click)="modalService.close();">Close</button> -->
+                <!-- Bouton Fermer du Modal-->
+                <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="modalService.close()">FERMER</a></div>
+
+              </jw-modal>
+              <!-- FIN DU MODAL -->
+              
               <div class="card h-100" >
                   <!-- Sale badge-->
                   <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
@@ -42,9 +64,10 @@
                   <div class="card-body p-4" >
                       <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
                         <ng-template pTemplate="header">
-                            <h5><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5>
+                            <!-- <h5><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5> -->
+                            <h5 class="text-center">{{prod.nom}}</h5>
                         </ng-template>
-                        <ng-template let-photoUrl pTemplate="item" (click)="ShowArticle(prod)">
+                        <ng-template let-photoUrl pTemplate="item" >
                             <div class="item card" (click)="ShowArticle(prod)">
                                 <img src="{{photoUrl}}" class="card-img-top" alt="...">
                             </div>
@@ -62,15 +85,23 @@
                       </div>
                       <!-- Product actions: Vente au Détail-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
-                      <small>{{prod.prix }} FCFA / {{prod.united}}</small>
-                      <div><p>Qte {{prod.united}} : <input class="td-flex justify-content-center small text-warning mb-2" type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} placeholder="quantité en pièce..." ></p></div>
+                      <!-- <small>{{prod.prix }} FCFA / {{prod.united}}</small> -->
+                      <div class="prixdetail" >
+                        <h3>{{formatToMillier(prod.prix) }} FCFA / pièce</h3>
+                        <input class="td-flex justify-content-center text-dark mb-5 " type="number" #quantiteDetail min="0" (input)="updateQteDetail(prod,quantiteDetail.value)" value={{prod.qteAVendreDetail}} placeholder="quantité en pièce..." />
+                      </div>
+                      
                       <!-- <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addToCart(prod,0)">Ajouter au Panier</a></div> -->
                     </div>
 
                     <!-- Product actions: Vente en Gros-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent flexbox">
-                        <small>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </small>
-                        <div class="d-flex justify-content-center small text-warning mb-2"><p>Qte {{prod.unitec}} : <input type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} placeholder="quantité en carton..." ></p></div>
+                        <!-- <small>Prix {{prod.unitec}}: {{prod.prixvc}} F CFA </small> -->
+                        <div class="prixcarton"  *ngIf="prod.GROSSITE>0" >
+                          <h3>{{ formatToMillier(prod.prix) }} FCFA / carton</h3>
+                          <input class="td-flex justify-content-center text-dark mb-5 " type="number" #quantiteGros min="0" (input)="updateQteGros(prod,quantiteGros.value)" value={{prod.qteAVendreGros}} placeholder="quantité en carton..." />
+                        </div>
+                        <!-- <div class="d-flex justify-content-center small text-warning mb-2"><p>Qte {{prod.unitec}} : </p></div> -->
                     </div>
 
                     <!-- Bouton Ajouter-->
@@ -87,8 +118,8 @@
     class="menu-button"
     routerLink="cart"
     >
-  <i class="material-icons" >shopping_cart</i>
-  <span class="badge bg-dark text-white ms-1 rounded-pill">{{totalItem}}</span>
+  <i class="material-icons md-48" >shopping_cart</i>
+  <span class="badge bg-dark text-white ms-2 rounded-pill">{{totalItem}}</span>
 </button>
 <!-- <button mat-fab color="warning" (click)="clickMenu()"
     class="menu-button"

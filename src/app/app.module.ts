@@ -15,6 +15,8 @@ import {CarouselModule} from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GallerieModalComponent } from './galleries/gallerie-modal/gallerie-modal.component';
+import { SearchBarComponent } from './recherche/search-bar/search-bar.component';
 
 
 // import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +26,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     ViewAllProductComponent,
+    GallerieModalComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,9 +2,9 @@
 /* @import 'swiper/scss';
 @import 'swiper/scss/navigation';
 @import 'swiper/scss/pagination'; */
-@import '~swiper/swiper.min.css';
+/* @import '~swiper/swiper.min.css';
 @import '~swiper/modules/navigation/navigation.min.css';
-@import '~swiper/modules/pagination/pagination.min.css';
+@import '~swiper/modules/pagination/pagination.min.css'; */
 
 
 /* Flexbox
@@ -156,3 +156,37 @@ img {vertical-align: middle;}
 .modal-content{
   text-align: center;
 }
+
+.outer-div {
+  padding: 30px;
+  text-align: center;
+}
+
+.prixdetail {
+  background-color: #e5e163;
+  color: black; 
+  display: inline-block;
+  padding: 5px;
+  text-align: center;
+  position: static;
+  left: 25%;
+  width: 100%;
+}
+
+.prixcarton {
+  background-color: #04d408;
+  color: black; 
+  display: inline-block;
+  padding: 5px;
+  text-align: center;
+  position: static;
+  left: 25%;
+  width: 100%;
+}
+
+/* Material Design Icons CSS Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+/*                           */

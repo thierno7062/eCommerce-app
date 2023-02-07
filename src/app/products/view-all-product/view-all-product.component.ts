@@ -1,18 +1,37 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, NgModule } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
-import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {ActivatedRoute} from '@angular/router';
-import {LocalStorageService, LocalStorage } from 'angular-web-storage';
-import { NgImageSliderComponent } from 'ng-image-slider';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {LocalStorageService } from 'angular-web-storage';
+
+import { ModalServiceService } from 'src/app/services/modal-service.service';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import {MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
+import { SearchBarComponent } from 'src/app/recherche/search-bar/search-bar.component';
+import { SearchDataService } from 'src/app/recherche/search-data.service';
+
 
 @Component({
   selector: 'app-view-all-product',
   templateUrl: './view-all-product.component.html',
   styleUrls: ['./view-all-product.component.css']
 })
+/* 
+@NgModule({
+  imports: [
+      MatIconModule, MatInputModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatFormFieldModule
+  ],
+}); */
+
 export class ViewAllProductComponent implements OnInit {
   productList: any;
   listArticles: any;
@@ -27,20 +46,26 @@ export class ViewAllProductComponent implements OnInit {
 
   responsiveOptions: any;
 
+  posSuivante: number = 1 ;
+  nbLignePage: number = 20 ;
+  chargementEncour: boolean = false;
+  lastPosY: number=0;
+
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
-    private stockage: LocalStorageService) {
+    private stockage: LocalStorageService, protected modalService: ModalServiceService) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
 
       environment.idClient=this.stockage.get(keyIdClient);
 
+      this.chargementEncour=true;
       this.route.queryParams.subscribe(params => {
         if (params['IDCLT']){
           environment.idClient = params['IDCLT'];
           this.stockage.set(keyIdClient,environment.idClient);
         }
         this.restorePanierFromStorage();
-        //console.log(environment.idClient);
+        this.chargementEncour=false;
       });
 
       this.responsiveOptions = [
@@ -70,8 +95,10 @@ export class ViewAllProductComponent implements OnInit {
     }) */
     this.restorePanierFromStorage();
 
-    this.productService.viewProduct2().subscribe(data=>{
-      let newListeArticles=new Array();
+    let newListeArticles=new Array();
+
+    this.productService.viewProduct2(this.posSuivante,this.nbLignePage).subscribe(data=>{
+      this.chargementEncour=true;
       data.forEach(function (article: any) {
         article['qteAVendreDetail']=0;
         article['qteAVendreGros']=0;
@@ -83,6 +110,7 @@ export class ViewAllProductComponent implements OnInit {
       //console.log(newListeArticles);
       this.cartservice.restoreCartQteToArticleliste(newListeArticles);
       this.listArticles=newListeArticles;
+      this.chargementEncour=false;
     });
 
     this.cartservice.getProducts()
@@ -90,6 +118,35 @@ export class ViewAllProductComponent implements OnInit {
       //console.log(res);
       this.totalItem=res.length;
     })
+  }
+
+  chargeListeArticle(){
+    let newListeArticles=new Array();
+    this.chargementEncour=true;
+    this.productService.viewProduct2(this.posSuivante,this.nbLignePage).subscribe(data=>{      
+      data.forEach(function (article: any) {
+        article['qteAVendreDetail']=0;
+        article['qteAVendreGros']=0;
+        article['TypeVente']=0;
+        article['isVenteGros']=false;
+        newListeArticles.push(article);        
+      });
+      this.cartservice.restoreCartQteToArticleliste(newListeArticles);
+      let listeA=this.listArticles ;
+      newListeArticles.forEach(function(article: any) {
+        listeA.push(article);       
+      });
+      //console.log(this.listArticles);
+      this.chargementEncour=false;      
+    });
+  }
+
+  ngAfterContentChecked():void{
+    if ( this.lastPosY != document.body.offsetHeight ){
+      //console.log("PosY: "+this+this.lastPosY);    
+      //console.log("La prochaine position sera : "+document.body.offsetHeight);    
+      this.lastPosY=document.body.offsetHeight ;
+    }   
   }
 
   /**
@@ -188,7 +245,42 @@ export class ViewAllProductComponent implements OnInit {
   ShowArticle(art: any){
     //Ouvre le modal contenant la gallerie
     console.log('Je vais ouvrir la gallerie pour '+art.nom);
+    this.modalService.open(art.id)
+    console.log("IdArt="+art.id);
 
   }
+
+  @HostListener("window:scroll", [])
+  onScroll(): void {
+    if (this.bottomReached()) {
+      this.posSuivante +=this.nbLignePage;
+      //On appele l'api pour charger la suite
+      console.log("Chargement de la suite numero..."+this.posSuivante);
+      this.chargeListeArticle();
+      //this.elements = [...this.elements, this.count++];
+    }
+  }
+
+  bottomReached(): boolean {
+    if (this.lastPosY==0){
+      this.lastPosY=document.body.offsetHeight ;
+    }
+    if (this.chargementEncour){
+      console.log("Un précédement chargement est en cour...");      
+      return false;
+    }
+    //return (window.innerHeight + window.scrollY) >= (document.body.offsetHeight);
+    if (((window.innerHeight+window.scrollY)+1700) >= (this.lastPosY)){
+      return true;
+    }else{
+      return false;
+    }
+    
+  }
+
+  formatToMillier(montant: number){
+    return montant.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1 ');
+  } 
+
 
 }
