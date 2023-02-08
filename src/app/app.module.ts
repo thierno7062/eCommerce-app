@@ -16,7 +16,16 @@ import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GallerieModalComponent } from './galleries/gallerie-modal/gallerie-modal.component';
-import { SearchBarComponent } from './recherche/search-bar/search-bar.component';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import {MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { SearchBarComponent } from 'src/app/recherche/search-bar/search-bar.component';
+import { SearchDataService } from 'src/app/recherche/search-data.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 // import { MatIconModule } from '@angular/material/icon';
@@ -31,6 +40,7 @@ import { SearchBarComponent } from './recherche/search-bar/search-bar.component'
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     OdersModule,
     HttpClientModule,
@@ -43,8 +53,13 @@ import { SearchBarComponent } from './recherche/search-bar/search-bar.component'
     ToastModule,
     ReactiveFormsModule,
 
+    MatIconModule, MatInputModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatFormFieldModule,
+
   ],
-  providers: [],
+  providers: [SearchDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
