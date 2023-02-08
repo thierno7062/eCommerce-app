@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, HostListener, NgModule } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, Input} from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { environment } from 'src/environments/environment';
 import { ProductService } from '../product.service';
@@ -7,14 +7,8 @@ import {LocalStorageService } from 'angular-web-storage';
 
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import {MatAutocompleteModule } from '@angular/material/autocomplete';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatFormFieldModule} from '@angular/material/form-field';
-
-import { SearchBarComponent } from 'src/app/recherche/search-bar/search-bar.component';
 import { SearchDataService } from 'src/app/recherche/search-data.service';
+
 
 
 @Component({
@@ -22,21 +16,15 @@ import { SearchDataService } from 'src/app/recherche/search-data.service';
   templateUrl: './view-all-product.component.html',
   styleUrls: ['./view-all-product.component.css']
 })
-/* 
-@NgModule({
-  imports: [
-      MatIconModule, MatInputModule,
-    MatAutocompleteModule,
-    MatChipsModule,
-    MatFormFieldModule
-  ],
-}); */
+
 
 export class ViewAllProductComponent implements OnInit {
   productList: any;
-  listArticles: any;
+  listArticles: any[]=[];
   @ViewChild('quantiteDetail') quantiteDetail:ElementRef | undefined;
   @ViewChild('quantiteGros') quantiteGros:ElementRef | undefined;
+
+  @Input() TexteRecherche = '';
 
   public totalItem:number = 0;
   public panierKey: string = "panier" ;
@@ -51,8 +39,9 @@ export class ViewAllProductComponent implements OnInit {
   chargementEncour: boolean = false;
   lastPosY: number=0;
 
+  
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
-    private stockage: LocalStorageService, protected modalService: ModalServiceService) {
+    private stockage: LocalStorageService, protected modalService: ModalServiceService, private dataService: SearchDataService) {
       const keyIdClient: string=this.panierKey+".IDCLIENT";
       console.log(this.stockage.get(keyIdClient));
 
@@ -111,6 +100,9 @@ export class ViewAllProductComponent implements OnInit {
       this.cartservice.restoreCartQteToArticleliste(newListeArticles);
       this.listArticles=newListeArticles;
       this.chargementEncour=false;
+      this.dataService.listeArticleBoutique = this.listArticles;
+      this.dataService.listeSansFiltre=this.listArticles ;
+
     });
 
     this.cartservice.getProducts()
@@ -137,7 +129,10 @@ export class ViewAllProductComponent implements OnInit {
         listeA.push(article);       
       });
       //console.log(this.listArticles);
-      this.chargementEncour=false;      
+      this.chargementEncour=false; 
+      this.dataService.listeArticleBoutique = listeA ;
+      this.dataService.listeSansFiltre=listeA ;
+
     });
   }
 
@@ -280,7 +275,54 @@ export class ViewAllProductComponent implements OnInit {
 
   formatToMillier(montant: number){
     return montant.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1 ');
-  } 
+  }
+
+  onSelectedOption(e: any) {
+    console.log("recherche e cour...");
+    this.getFilteredExpenseList();
+  }
+
+  onRechercheChange(txRech: any){
+    if (txRech==''){
+      //On reinitialise l'affichage
+      this.listArticles=this.dataService.listeSansFiltre ;
+      return ;
+    }
+    //console.log("On va recherche ici..."+ txRech);
+    let newListe=[];
+    
+    let origineList: Array<any>=this.dataService.listeSansFiltre ;
+
+    newListe=origineList.filter( 
+      function (article: any){
+        let xNom=article.nom.toLowerCase();
+       if (article.nom.toLowerCase().indexOf(txRech)>=0){
+          return true;
+       }else{
+        return false;
+       }
+      }
+    ) ;
+
+    console.log(newListe);    
+    this.listArticles=newListe ;
+
+  }
+
+  
+
+  getFilteredExpenseList() {
+    if (this.dataService.searchOption.length > 0){
+      console.log("On a des options de recherche e cour...");
+      this.listArticles = this.dataService.filteredListOptions();
+    }      
+    else {
+      console.log("Aucune option de Recherche choisit.");      
+      this.listArticles = this.dataService.listeSansFiltre;
+    }
+    console.log(this.listArticles)
+  }
+
 
 
 }

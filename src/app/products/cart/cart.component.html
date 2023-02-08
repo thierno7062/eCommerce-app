@@ -39,15 +39,9 @@
                   <div class="card-body p-4">
                       <div class="text-center">
                           <!-- Product name-->
-                          <h6 class="fw-bolder"><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h6>
+                          <h6 class="fw-bolder">{{prod.nom}}</h6>
                           <!-- Product reviews-->
-                          <div class="d-flex justify-content-center small text-warning mb-2">
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
-                              <div class="bi-star-fill"></div>
-                          </div>
+                          
                           <!-- Product price-->
                           <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
                          <h5 *ngIf="prod.qteAVendreDetail > 0">{{prod.prix }} FCFA / {{prod.united}}</h5>
