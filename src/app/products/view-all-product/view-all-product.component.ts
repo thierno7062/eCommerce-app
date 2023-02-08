@@ -38,6 +38,7 @@ export class ViewAllProductComponent implements OnInit {
   nbLignePage: number = 20 ;
   chargementEncour: boolean = false;
   lastPosY: number=0;
+  textR: string='';
 
   
   constructor(private productService: ProductService, private cartservice: CartService, private route: ActivatedRoute,
@@ -112,10 +113,10 @@ export class ViewAllProductComponent implements OnInit {
     })
   }
 
-  chargeListeArticle(){
+  chargeListeArticle(txRech: string = ''){
     let newListeArticles=new Array();
     this.chargementEncour=true;
-    this.productService.viewProduct2(this.posSuivante,this.nbLignePage).subscribe(data=>{      
+    this.productService.viewProduct2(this.posSuivante,this.nbLignePage,txRech).subscribe(data=>{      
       data.forEach(function (article: any) {
         article['qteAVendreDetail']=0;
         article['qteAVendreGros']=0;
@@ -126,7 +127,19 @@ export class ViewAllProductComponent implements OnInit {
       this.cartservice.restoreCartQteToArticleliste(newListeArticles);
       let listeA=this.listArticles ;
       newListeArticles.forEach(function(article: any) {
-        listeA.push(article);       
+        let existe: boolean =false ;
+        listeA.forEach(function(art: any){
+          if (existe){
+            //return ;
+          }
+          if (art.id == article.id){
+            existe=true;
+            return ;
+          }
+        })
+        if (!existe){
+          listeA.push(article); 
+        }              
       });
       //console.log(this.listArticles);
       this.chargementEncour=false; 
@@ -251,7 +264,7 @@ export class ViewAllProductComponent implements OnInit {
       this.posSuivante +=this.nbLignePage;
       //On appele l'api pour charger la suite
       console.log("Chargement de la suite numero..."+this.posSuivante);
-      this.chargeListeArticle();
+      this.chargeListeArticle(this.textR);
       //this.elements = [...this.elements, this.count++];
     }
   }
@@ -283,14 +296,26 @@ export class ViewAllProductComponent implements OnInit {
   }
 
   onRechercheChange(txRech: any){
+    this.textR=txRech;
+
     if (txRech==''){
       //On reinitialise l'affichage
-      this.listArticles=this.dataService.listeSansFiltre ;
+      this.dataService.listeArticleBoutique=[] ;
+      this.dataService.listeSansFiltre=[] ;
+      this.listArticles=[]; //this.dataService.listeSansFiltre ;
+      this.posSuivante=1;
+      this.chargeListeArticle(txRech);
       return ;
     }
     //console.log("On va recherche ici..."+ txRech);
     let newListe=[];
-    
+    //On va faire la recherche sur le serveur oubien ?
+    this.dataService.listeArticleBoutique=[] ;
+    this.dataService.listeSansFiltre=[] ;
+    this.listArticles=[]
+    this.chargeListeArticle(txRech);
+    return ;
+
     let origineList: Array<any>=this.dataService.listeSansFiltre ;
 
     newListe=origineList.filter( 
