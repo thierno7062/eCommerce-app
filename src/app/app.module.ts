@@ -25,6 +25,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { SearchBarComponent } from 'src/app/recherche/search-bar/search-bar.component';
 import { SearchDataService } from 'src/app/recherche/search-data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatGridListModule} from '@angular/material/grid-list';
+
 
 
 
@@ -57,6 +59,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatAutocompleteModule,
     MatChipsModule,
     MatFormFieldModule,
+    MatGridListModule
 
   ],
   providers: [SearchDataService],

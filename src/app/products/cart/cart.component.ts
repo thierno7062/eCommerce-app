@@ -16,9 +16,15 @@ export class CartComponent implements OnInit {
   public grandTotalFormat: any;
 
   searchText:string | any;
-  constructor(private cartService: CartService, private nabysyService: NabysyFactureService) { }
+  constructor(private cartService: CartService, private nabysyService: NabysyFactureService) {
+    this.getAllProduct();
+   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
+    this.getAllProduct();
+  }
+
+  getAllProduct(){
     this.cartService.getProducts()
     .subscribe(res=>{
       this.product=res;
@@ -126,7 +132,7 @@ export class CartComponent implements OnInit {
     }
 
     this.nabysyService.envoiePanier(this.listePanier).subscribe(data=>{
-      console.log(data);      
+      console.log(data);
       let Reponse=data;
       if (Reponse.OK>0){
         Swal.fire(
@@ -149,6 +155,6 @@ export class CartComponent implements OnInit {
 
   formatToMillier(montant: number){
     return montant.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1 ');
-  }  
+  }
 
 }

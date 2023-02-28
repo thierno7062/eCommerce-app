@@ -1,70 +1,135 @@
-
 <!-- Empty cart -->
-<ng-container *ngIf="product.length ==0">
-  <div class="center"  style="margin-top: 100px;">
+<ng-container *ngIf="product.length == 0">
+  <div class="center" style="margin-top: 100px">
     <h4>Votre panier est vide!</h4>
     <h6>Ajoutez des articles maintenant !</h6>
-    <button routerLink="/products" class="btn btn-success">Voir la Boutique</button>
+    <button routerLink="/products" class="btn btn-success">
+      Voir la Boutique
+    </button>
   </div>
 </ng-container>
 
-<div class="card-table" *ngIf="product.length !=0">
+<!-- <div
+  class="card-table"
+  *ngIf="product.length != 0"
+  style="position: relative; margin: auto"
+>
   <table class="table table-responsive">
     <tbody>
       <tr>
-        <td><h3 style="border: 1px black solid;">Total: {{grandTotalFormat}} CFA</h3></td>
-        <td colspan="4"><h5 >{{product.length}} article(s) </h5></td>        
+        <td>
+          <h3 style="border: 1px black solid">
+            Total: {{ grandTotalFormat }} CFA
+          </h3>
+        </td>
+        <td colspan="4">
+          <h5>{{ product.length }} article(s)</h5>
+        </td>
       </tr>
-      <tr>        
-        <td><button (click)="envoyerCommande()" class="btn btn-success">Commander</button></td> 
-        <td><button (click)="emptyCart()" class="btn btn-danger">Vider</button></td>
-        <td><button routerLink="/products" class="btn btn-primary">Retour</button></td>               
+      <tr>
+        <td>
+          <button (click)="envoyerCommande()" class="btn btn-success">
+            Commander
+          </button>
+        </td>
+        <td>
+          <button (click)="emptyCart()" class="btn btn-danger">Vider</button>
+        </td>
+        <td>
+          <button routerLink="/products" class="btn btn-primary">Retour</button>
+        </td>
       </tr>
     </tbody>
   </table>
+</div> -->
+
+<div style="display: flex;" class="card-table" *ngIf="product.length != 0">
+  <div class="row gx-2 row-cols-xl-1 " style="width: 30%; margin-left: 1%; margin-top: 1%;">
+    <h3 style="border: 1px black solid; ">Total: {{ grandTotalFormat }} CFA</h3>
+  </div>
+  <div style="margin-left: 2%; margin-top: 1%;">
+    <h5>{{ product.length }} article(s)</h5>
+  </div>
 </div>
 
-<section class=""  *ngIf="product.length !=0">
+<div class="card-table" style="display: flex;" *ngIf="product.length != 0">
+
+   <div style="padding: 2%;">
+    <button (click)="envoyerCommande()" class="btn btn-success">  Commander  </button>
+   </div>
+
+   <div style="padding-top: 2%; padding-left: 10%;"><button (click)="emptyCart()" class="btn btn-danger">Vider</button></div>
+
+   <div style="padding-top: 2%; padding-left: 10%;"><button routerLink="/products" class="btn btn-primary">Retour</button></div>
+
+</div>
+
+<section class="" *ngIf="product.length != 0">
   <div class="container px-5 px-lg-5 mt-5">
-      <div class="row gx-4 gx-lg-8 row-cols-12 row-cols-md-2 row-cols-xl-3 justify-content-center">
-
-          <div class="col mb-5" *ngFor="let prod of listePanier">
-              <div class="card h-100" >
-                  <!-- Sale badge-->
-                  <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
-                  <!-- Product image-->
-                  <img class="card-img-top" [src]=" prod.photo  " alt="..." style="height: 100%;"/>
-                  <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
-                  <!-- Product details-->
-                  <div class="card-body p-4">
-                      <div class="text-center">
-                          <!-- Product name-->
-                          <h6 class="fw-bolder">{{prod.nom}}</h6>
-                          <!-- Product reviews-->
-                          
-                          <!-- Product price-->
-                          <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
-                         <h5 *ngIf="prod.qteAVendreDetail > 0">{{prod.prix }} FCFA / {{prod.united}}</h5>
-                         <h5 *ngIf="prod.qteAVendreDetail > 0">Quantité : {{prod.qteAVendreDetail}}</h5>
-                         <h5 *ngIf="prod.qteAVendreDetail > 0">Total : {{prod.prix * prod.qteAVendreDetail}}</h5>
-
-
-                         <h5 *ngIf="prod.qteAVendreGros > 0">{{prod.prixvc }} FCFA / {{prod.unitec}}</h5>
-                         <h5 *ngIf="prod.qteAVendreGros > 0">Quantité : {{prod.qteAVendreGros}}</h5>
-                         <h5 *ngIf="prod.qteAVendreGros > 0">Total : {{prod.prixvc * prod.qteAVendreGros}}</h5>
-                        </div>
-                    </div>
-
-
-                    <!-- Bouton Supprimer / Modifer -->
-                    <div style="display: flex; margin: auto;" class="center">
-                      <div class="text-center" style="margin-right: 20px;"><a class="btn btn-danger" (click)="removeItem(prod,prod.isVenteGros)">Supprimer</a></div>   
-                    </div>
-
-              </div>
+    <div
+      class="row gx-4 gx-lg-1 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center"
+    >
+      <div class="col mb-5" *ngFor="let prod of listePanier">
+        <div class="card h-100">
+          <!-- Sale badge-->
+          <div
+            *ngIf="prod.PROMOS == 1"
+            class="badge bg-danger text-white position-absolute"
+            style="top: 0.5rem; right: 0.5rem"
+          >
+            Promos
           </div>
+          <!-- Product image-->
+          <img
+            class="card-img-top"
+            [src]="prod.photo"
+            alt="..."
+            style="height: 100%;width: 100%;"
+          />
+          <!-- <img class="card-img-top" src=" ./assets/images.jpeg" alt="..." /> -->
+          <!-- Product details-->
+          <div class="card-body p-4">
+            <div class="text-center">
+              <!-- Product name-->
+              <h6 class="fw-bolder">{{ prod.nom }}</h6>
+              <!-- Product reviews-->
+
+              <!-- Product price-->
+              <!-- <span class="text-muted text-decoration-line-through">${{prod.price}}</span> -->
+              <h5 *ngIf="prod.qteAVendreDetail > 0">
+                {{ prod.prix }} FCFA / {{ prod.united }}
+              </h5>
+              <h5 *ngIf="prod.qteAVendreDetail > 0">
+                Quantité : {{ prod.qteAVendreDetail }}
+              </h5>
+              <h5 *ngIf="prod.qteAVendreDetail > 0">
+                Total : {{ prod.prix * prod.qteAVendreDetail }}
+              </h5>
+
+              <h5 *ngIf="prod.qteAVendreGros > 0">
+                {{ prod.prixvc }} FCFA / {{ prod.unitec }}
+              </h5>
+              <h5 *ngIf="prod.qteAVendreGros > 0">
+                Quantité : {{ prod.qteAVendreGros }}
+              </h5>
+              <h5 *ngIf="prod.qteAVendreGros > 0">
+                Total : {{ prod.prixvc * prod.qteAVendreGros }}
+              </h5>
+            </div>
+          </div>
+
+          <!-- Bouton Supprimer / Modifer -->
+          <div style="display: flex; margin: auto" class="center">
+            <div class="text-center" style="margin-right: 20px">
+              <a
+                class="btn btn-danger"
+                (click)="removeItem(prod, prod.isVenteGros)"
+                >Supprimer</a
+              >
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 </section>
-
-
