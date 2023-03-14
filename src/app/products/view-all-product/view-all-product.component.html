@@ -4,7 +4,7 @@
       <div class="text-center text-white">
           <h1 class="display-5 fw-bolder">Boutique Keur Serigne Saliou Vaisselle</h1>
       </div>
-      <div style="margin:auto; width: 70%; margin-top: 30px;">
+      <div style="margin:auto; width: 70%; margin-top: 30px;" class="fixed-top">
         <app-search-bar (onRechercheChange)="onRechercheChange($event)"></app-search-bar>
       </div>
   </div>
@@ -58,9 +58,12 @@
                   <div *ngIf="prod.PROMOS==1" class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promos</div>
 
                   <div class="card-body p-4" >
-                      <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
+                    <h5 class="text-center">{{prod.nom}}</h5>                      
+                      <div class="item card" (click)="ShowArticle(prod)">
+                        <img src="{{prod.photo}}" class="card-img-top" width="400px" height="500px" alt="...">
+                      </div>
+                      <!-- <p-carousel [value]="prod.GALLERIE" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
                         <ng-template pTemplate="header">
-                            <!-- <h5><a routerLink="view-product/{{prod.id}}">{{prod.nom}}</a></h5> -->
                             <h5 class="text-center">{{prod.nom}}</h5>
                         </ng-template>
                         <ng-template let-photoUrl pTemplate="item" >
@@ -68,7 +71,7 @@
                                 <img src="{{photoUrl}}" class="card-img-top" alt="...">
                             </div>
                         </ng-template>
-                      </p-carousel>
+                      </p-carousel> -->                      
                       <div class="text-center">
                           <!-- Product reviews-->
                           <div class="d-flex justify-content-center small text-warning mb-2">
